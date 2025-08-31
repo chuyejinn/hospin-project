@@ -2,6 +2,7 @@ package com.example.hospin.service;
 
 import com.example.hospin.domain.entity.MedicalRecord;
 import com.example.hospin.dto.MedicalRecordDetailDto;
+import com.example.hospin.dto.MedicalRecordResponseDto;
 import com.example.hospin.dto.MedicalRecordSummaryDto;
 import com.example.hospin.repository.MedicalRecordRepository;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,19 @@ public class MedicalRecordService {
                         r.getTreatmentFee()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public MedicalRecordResponseDto getRecordById(Long recordId) {
+        MedicalRecord record = medicalRecordRepository.findById(recordId)
+                .orElseThrow(() -> new NoSuchElementException("해당 진료 기록이 존재하지 않습니다."));
+
+        return new MedicalRecordResponseDto(
+                record.getId(),
+                record.getVisitDate(),
+                record.getDepartment(),
+                "임의의사",                  // doctor
+                record.getDiagnosis(),      // content 대신
+                "진통제 3번 복용"           // prescription 임시
+        );
     }
 }

@@ -18,12 +18,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/**") // 모든 경로에 대해 보안 설정 적용
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().permitAll() // 테스트 단계에선 전체 허용
+                        .requestMatchers(
+                                "/",                      // 홈
+                                "/auth/**",               // 인증 관련
+                                "/swagger-ui.html",       // Swagger 메인
+                                "/swagger-ui/**",         // Swagger UI 리소스
+                                "/v3/api-docs/**",        // OpenAPI JSON
+                                "/v3/api-docs",
+                                "/swagger-resources/**",  // Swagger 리소스
+                                "/webjars/**"             // Swagger JS
+                        ).permitAll()
+                        .anyRequest().permitAll() // 일단 전체 허용
                 )
-                .csrf(csrf -> csrf.disable()); // CSRF 보호 비활성화 (API 서버용)
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

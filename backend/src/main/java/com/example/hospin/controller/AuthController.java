@@ -2,18 +2,17 @@ package com.example.hospin.controller;
 
 import com.example.hospin.dto.LoginRequest;
 import com.example.hospin.dto.SignupRequest;
+import com.example.hospin.dto.LoginResponse;
 import com.example.hospin.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
 
-    // Lombok @RequiredArgsConstructor 대신 직접 생성자 작성
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -25,7 +24,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        LoginResponse response = authService.login(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        // JWT 무상태 로그아웃
+        return ResponseEntity.ok("Logout successful");
     }
 }
