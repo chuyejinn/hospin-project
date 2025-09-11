@@ -5,7 +5,7 @@ import com.example.hospin.domain.entity.UserRole;
 public class SignupRequest {
     private String email;
     private String password;
-    private String name;
+    private String username;
     private String gender;
     private String birthdate;
     private UserRole role;
@@ -19,8 +19,8 @@ public class SignupRequest {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
     public String getGender() { return gender; }
     public void setGender(String gender) { this.gender = gender; }
@@ -29,7 +29,8 @@ public class SignupRequest {
     public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
 
     public UserRole getRole() { return role; }
-    public UserRole setRole(UserRole role) { this.role = role;
-        return role;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
+
 }

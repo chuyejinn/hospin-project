@@ -7,7 +7,9 @@ import com.example.hospin.dto.SignupRequest;
 import com.example.hospin.repository.UserRepository;
 import com.example.hospin.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,17 +18,17 @@ import java.time.format.DateTimeParseException;
 @Service
 public class AuthService {
 
+
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    private final PasswordEncoder passwordEncoder;
 
     public void signup(SignupRequest request) {
         User user = new User();
 
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setUsername(request.getName());
+        user.setUsername(request.getUsername());
         user.setGender(request.getGender());
 
         // ✅ 생년월일이 null이 아니고, 올바른 형식일 때만 LocalDate로 변환

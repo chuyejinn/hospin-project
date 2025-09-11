@@ -1,10 +1,6 @@
 package com.example.hospin.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -15,18 +11,18 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
-
-    private String username;  // ✅ 사용자 아이디
-    private String password;  // ✅ 사용자 비밀번호
+    @Column(name = "name") // DB의 name 컬럼과 매핑
+    private String username;
+    private String password;
     private String email;
     private String gender;
     private LocalDate birthdate;
-    @Getter
+
+    @Enumerated(EnumType.STRING) // enum → 문자열 저장
     private UserRole role;
-
-
 
     // ✅ 기본 생성자
     public User() {}
@@ -44,12 +40,12 @@ public class User {
     public String getUsername() { return username; }
     public void setUsername(String name) { this.username = name; }
 
-    public void setGender(String gender) {
-    }
-    public void setBirthdate(LocalDate parse) {
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public void setRole(UserRole role) {
-    }
+    public LocalDate getBirthdate() { return birthdate; }
+    public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
 
+    public UserRole getRole() { return role; }
+    public void setRole(UserRole role) { this.role = role; }
 }
