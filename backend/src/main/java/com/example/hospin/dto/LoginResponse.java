@@ -1,12 +1,14 @@
 package com.example.hospin.dto;
 
+import com.example.hospin.domain.entity.UserRole;
+
 public class LoginResponse {
     private Long id;
     private String name;
     private String role;
     private String token;
 
-    public LoginResponse() {}
+    public LoginResponse(Long id, String username, UserRole role, String token) {}
 
     public LoginResponse(Long id, String name, String role, String token) {
         this.id = id;

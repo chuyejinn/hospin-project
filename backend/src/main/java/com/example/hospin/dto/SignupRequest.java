@@ -1,11 +1,15 @@
 package com.example.hospin.dto;
 
+import com.example.hospin.domain.entity.UserRole;
+
 public class SignupRequest {
     private String email;
     private String password;
     private String name;
     private String gender;
     private String birthdate;
+    private UserRole role;
+
 
     public SignupRequest() {}
 
@@ -23,4 +27,9 @@ public class SignupRequest {
 
     public String getBirthdate() { return birthdate; }
     public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
+
+    public UserRole getRole() { return role; }
+    public UserRole setRole(UserRole role) { this.role = role;
+        return role;
+    }
 }

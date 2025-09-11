@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+
 public class AuthController {
 
     private final AuthService authService;
@@ -34,4 +35,5 @@ public class AuthController {
         // JWT 무상태 로그아웃
         return ResponseEntity.ok("Logout successful");
     }
+
 }

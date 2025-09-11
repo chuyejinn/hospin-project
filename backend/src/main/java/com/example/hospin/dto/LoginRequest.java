@@ -3,6 +3,8 @@ package com.example.hospin.dto;
 public class LoginRequest {
     private String email;
     private String password;
+    private  String token;
+
 
     // 기본 생성자 + getter/setter
     public LoginRequest() {}

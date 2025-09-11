@@ -1,12 +1,15 @@
 package com.example.hospin.service;
 
 import com.example.hospin.domain.entity.MedicalRecord;
+import com.example.hospin.domain.entity.User;
 import com.example.hospin.dto.MedicalRecordDetailDto;
+import com.example.hospin.dto.MedicalRecordRequestDto;
 import com.example.hospin.dto.MedicalRecordResponseDto;
 import com.example.hospin.dto.MedicalRecordSummaryDto;
 import com.example.hospin.repository.MedicalRecordRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,17 +59,24 @@ public class MedicalRecordService {
                 .collect(Collectors.toList());
     }
 
+    /** 진료 기록 단건 조회 */
     public MedicalRecordResponseDto getRecordById(Long recordId) {
         MedicalRecord record = medicalRecordRepository.findById(recordId)
                 .orElseThrow(() -> new NoSuchElementException("해당 진료 기록이 존재하지 않습니다."));
+        return new MedicalRecordResponseDto(record);
+    }
 
-        return new MedicalRecordResponseDto(
-                record.getId(),
-                record.getVisitDate(),
-                record.getDepartment(),
-                "임의의사",                  // doctor
-                record.getDiagnosis(),      // content 대신
-                "진통제 3번 복용"           // prescription 임시
-        );
+    /** 진료 기록 등록 */
+    public MedicalRecordResponseDto createRecord(MedicalRecordRequestDto dto, User user) {
+        MedicalRecord record = new MedicalRecord();
+        record.setVisitDate(LocalDate.parse(dto.getDate()));
+        record.setDepartment(dto.getDepartment());
+        record.setDoctor(dto.getDoctor());
+        record.setDiagnosis(dto.getContent());
+        record.setPrescription(dto.getPrescription());
+        record.setUser(user); // ✅ 핵심 추가
+
+        MedicalRecord saved = medicalRecordRepository.save(record);
+        return new MedicalRecordResponseDto(saved);
     }
 }

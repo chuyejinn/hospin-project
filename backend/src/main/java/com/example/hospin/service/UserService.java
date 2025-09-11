@@ -28,6 +28,6 @@ public class UserService {
 
         String token = "JWT_TOKEN_여기서_생성"; // JwtUtil 이용 가능
 
-        return new LoginResponse(user.getId(), user.getEmail(), user.getName(), token);
+        return new LoginResponse(user.getId(), user.getEmail(), user.getUsername(), token);
     }
 }

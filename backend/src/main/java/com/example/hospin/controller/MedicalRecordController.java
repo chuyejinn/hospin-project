@@ -1,43 +1,65 @@
 package com.example.hospin.controller;
 
+import com.example.hospin.domain.entity.User;
+import com.example.hospin.dto.MedicalRecordDetailDto;
+import com.example.hospin.dto.MedicalRecordRequestDto;
 import com.example.hospin.dto.MedicalRecordResponseDto;
+import com.example.hospin.dto.MedicalRecordSummaryDto;
+import com.example.hospin.security.UserDetailsImpl;
 import com.example.hospin.service.MedicalRecordService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
+import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
+@SecurityRequirement(name = "BearerAuth")
 @RequestMapping("/medical-records")
-@Tag(name = "medical-record-controller", description = "진료 기록 관련 API")
 public class MedicalRecordController {
 
     private final MedicalRecordService medicalRecordService;
 
-    public MedicalRecordController(MedicalRecordService medicalRecordService) {
-        this.medicalRecordService = medicalRecordService;
-    }
-
-    @GetMapping("/{recordId}")
-    @Operation(
-            summary = "진료 기록 상세 조회",
-            description = "recordId를 기반으로 진료 기록 상세 정보를 조회합니다."
-    )
-    public ResponseEntity<?> getMedicalRecord(@PathVariable Long recordId) {
+    /** 진료 기록 등록 */
+    @PostMapping
+    public ResponseEntity<?> createMedicalRecord(
+            @RequestBody MedicalRecordRequestDto dto,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
-            MedicalRecordResponseDto response = medicalRecordService.getRecordById(recordId);
-            return ResponseEntity.ok(response);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(404).body("해당 진료 기록이 존재하지 않습니다.");
+            User user = userDetails.getUser();
+            MedicalRecordResponseDto responseDto = medicalRecordService.createRecord(dto, user);
+            return ResponseEntity.ok(responseDto);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("진료 기록 상세 조회 실패");
+            return ResponseEntity.status(500).body("진료 기록 등록 실패\n" + e.getMessage());
         }
     }
-    @GetMapping("/ping")
-    public String ping() {
-        return "pong";
+
+    /** 진료 기록 단건 조회 */
+    @GetMapping("/{recordId}")
+    public ResponseEntity<?> getRecordById(@PathVariable Long recordId) {
+        try {
+            MedicalRecordResponseDto responseDto = medicalRecordService.getRecordById(recordId);
+            return ResponseEntity.ok(responseDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
     }
 
+    /** 연도별 요약 조회 */
+    @GetMapping("/summary/{userId}")
+    public ResponseEntity<List<MedicalRecordSummaryDto>> getSummary(@PathVariable Long userId) {
+        return ResponseEntity.ok(medicalRecordService.getSummaryByUserId(userId));
+    }
+
+    /** 연월 상세 조회 */
+    @GetMapping("/detail/{userId}")
+    public ResponseEntity<List<MedicalRecordDetailDto>> getMonthlyDetail(
+            @PathVariable Long userId,
+            @RequestParam int year,
+            @RequestParam int month) {
+        return ResponseEntity.ok(medicalRecordService.getMonthlyDetail(userId, year, month));
+    }
 }
