@@ -1,0 +1,416 @@
+/* ============ 공통 래퍼 ============ */
+/* 온라인 예약 화면 전체 가로 폭 제한 */
+.or-wrap {
+  width: 100%;
+  min-height: 100vh;
+  background: #f0f2f5;
+  font-family: 'Noto Sans KR', sans-serif;
+
+  display: flex;
+  flex-direction: column;
+
+  max-width: 1200px;   /* ✅ 최대 가로폭 제한 */
+  margin: 0 auto;      /* ✅ 화면 가운데 정렬 */
+}
+
+
+.or-header {
+  background: #fff;
+  padding: 20px 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.or-body {
+  display: flex;
+  gap: 20px;
+  padding: 20px 40px;
+  flex: 1;
+}
+
+/* ============ 좌측 메뉴 ============ */
+.or-left-menu {
+  width: 220px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.or-left-menu button {
+  padding: 14px 12px;
+  font-size: 17px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  background: #7ea3d9;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.or-left-menu button:hover { background:#668fc6; }
+
+/* ============ 콘텐츠 + 오른쪽 단계 ============ */
+.or-content-row {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  align-items: flex-start;
+}
+
+/* 메인 영역 */
+.or-main {
+  flex: 1;
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* 오른쪽 타원형 단계 인디케이터 */
+.or-step-rail {
+  width: 220px;
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
+}
+
+.or-step-oval {
+  border-radius: 110px;
+  background: linear-gradient(180deg, #d7e6fb 0%, #8fb3e0 100%);
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.or-step-circle {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid #cfd9e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.or-step-circle span {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.or-step-circle.pending { background:#fff; color:#000; }
+.or-step-circle.current { background:#a8c6ef; color:#000; }
+.or-step-circle.done    { background:#2f5f91; color:#fff; }
+
+/* ============ 섹션/타이틀 ============ */
+.or-section { display:flex; flex-direction:column; gap:22px; }
+.or-title { font-size:28px; font-weight:800; margin:0 0 50px; }
+
+/* ============ 방법 카드 ============ */
+.or-card-list {
+  display:flex;
+  gap:20px;
+  align-items:center;
+  justify-content:flex-start;
+  flex-wrap:wrap;
+}
+.or-card {
+  width: 250px;
+  height: 250px;
+  background:#fff;
+  border-radius:16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  cursor:pointer;
+  transition: transform .2s, box-shadow .2s;
+}
+.or-card:hover { transform: translateY(-6px); box-shadow:0 8px 20px rgba(0,0,0,0.12); }
+.or-card img { width:110px; height:110px; object-fit:contain; }
+.or-card p { font-size:18px; font-weight:700; margin:0; }
+
+/* ============ 개인정보 폼 ============ */
+.or-form { padding-top: 6px; }
+.or-form-row {
+  display:flex;
+  align-items:flex-end;
+  gap: 18px;
+  padding: 18px 0 8px;
+}
+.or-form-label {
+  min-width: 180px;
+  font-size: 28px;
+  font-weight: 600; /* 굵기 줄임 */
+}
+.or-form-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 26px;
+  font-weight: 400; /* 입력 글씨 굵기 줄임 */
+  padding: 6px 4px 10px;
+}
+.or-input-large::placeholder {
+  color: #c5cdd7;
+  font-weight: 400; /* placeholder 얇게 */
+}
+.or-hr {
+  height: 1px;
+  background:#cfd6e2;
+  margin: 2px 0 8px;
+}
+.or-actions { display:flex; justify-content:flex-end; margin-top:12px; }
+.or-actions.two { justify-content:space-between; }
+
+/* 버튼 */
+.or-btn-primary {
+  min-width: 120px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: none;
+  background: #3a6aa0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px; /* 글씨 크기 키움 */
+  cursor: pointer;
+}
+.or-btn-primary:disabled { background:#c9cfd8; cursor:not-allowed; }
+.or-btn-ghost {
+  min-width: 120px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #9fb8d8;
+  background: #fff;
+  color: #3a6aa0;
+  font-weight: 700;
+  font-size: 18px; /* 글씨 크기 키움 */
+  cursor: pointer;
+}
+
+/* ============ 의료진 카드 ============ */
+.or-doc-grid {
+  display:grid;
+  grid-template-columns: repeat(2, minmax(320px, 1fr));
+  gap:20px;
+}
+.or-doc-card {
+  position: relative;
+  display:flex;
+  gap:16px;
+  padding:16px;
+  border-radius:12px;
+  background:#e7eef9;
+  border:2px solid transparent;
+  cursor:pointer;
+  transition: border-color .15s, background .15s;
+}
+.or-doc-card.selected {
+  background:#d9e8fb;
+  border-color:#2f5f91;
+}
+.or-doc-left { flex:0 0 auto; }
+.or-doc-img { width:110px; height:130px; border-radius:8px; object-fit:cover; background:#fff; }
+.or-doc-right { flex:1; display:flex; flex-direction:column; gap:6px; }
+.or-doc-name { font-size:20px; font-weight:700; }
+.or-doc-dept { color:#1f3c5a; font-weight:600; }
+.or-doc-line { font-size:14px; color:#1b2a3a; display:flex; flex-wrap:wrap; gap:6px; }
+.or-chip {
+  background:#fff;
+  border-radius:6px;
+  padding:4px 8px;
+  border:1px solid #c8d6ea;
+  font-size:13px;
+}
+
+/* 체크박스 */
+.or-check-wrap {
+  position:absolute;
+  right:14px;
+  bottom:14px;
+}
+.or-check {
+  width:22px;
+  height:22px;
+  accent-color:#2f5f91;
+  background:#fff;
+}
+
+/* ============ 달력 ============ */
+.or-calendar-wrap {
+  background:#fff;
+  border:1px solid #e0e5ef;
+  border-radius:12px;
+  padding:16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.or-cal-top {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  margin-bottom:12px;
+}
+.or-cal-ym {
+  font-weight:700;
+  font-size:22px;
+}
+.or-cal-nav {
+  border:none;
+  background:#e6eefb;
+  border-radius:8px;
+  padding:6px 10px;
+  cursor:pointer;
+  font-weight:700;
+}
+.or-cal-grid {
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap:8px;
+}
+.or-cal-week { margin-bottom:6px; }
+.or-cal-weekcell {
+  text-align:center;
+  font-weight:700;
+  color:#2a3b53;
+  padding:6px 0;
+}
+.or-cal-cell {
+  height:60px;
+  border:1px solid #d9e2f1;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#fff;
+  cursor:pointer;
+}
+.or-cal-cell.empty { background:#f7f9fd; cursor:default; }
+.or-cal-cell.selected {
+  border:2px solid #e22;
+  color:#e22;
+  font-weight:900;
+}
+
+/* 시간 선택 */
+.or-times {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:14px;
+}
+.or-time {
+  border:1px solid #d1d8e6;
+  background:#fff;
+  border-radius:8px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:600;
+}
+.or-time.on {
+  background:#3a6aa0;
+  color:#fff;
+  border-color:#2f5f91;
+}
+
+/* 반응형 */
+@media (max-width: 1200px) {
+  .or-content-row { flex-direction: column; }
+  .or-step-rail { position: relative; width:100%; }
+  .or-step-oval { margin-top: 12px; flex-direction: row; justify-content: center; border-radius: 24px; }
+  .or-step-circle { width:120px; height:120px; }
+}
+
+/* 에러 문구 */
+.or-error {
+  color: #e53935;
+  font-size: 15px;
+  margin: 4px 0 8px 180px; /* 라벨 기준 오른쪽 정렬 맞춤 */
+  font-weight: 500;
+}
+
+.or-cal-cell.disabled {
+  background: #f2f2f2;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* 예약 완료 */
+.or-complete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.or-complete-box {
+  background: #fff;
+  border: 2px solid #b5c8e6;
+  border-radius: 10px;
+  padding: 40px 60px;
+  max-width: 600px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.or-complete-box h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.or-complete-box hr {
+  margin: 15px 0 25px;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.or-complete-box p {
+  font-size: 18px;
+  margin: 12px 0;
+}
+
+.or-complete-box strong {
+  color: #1f3c5a;
+  margin-right: 6px;
+}
+
+/* ============ 상단 바 ============ */
+.staff-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2f5f91;
+  padding: 12px 40px;
+}
+.staff-logo {
+  height: 50px;
+  cursor: pointer;
+}
+.staff-menu {
+  display: flex;
+  gap: 16px;
+}
+.staff-menu button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.staff-menu button:hover {
+  text-decoration: underline;
+}
