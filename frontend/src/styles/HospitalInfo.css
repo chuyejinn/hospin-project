@@ -1,0 +1,80 @@
+.hospital-info-content {
+  position: relative;
+  flex: 1;
+  background: white;
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 920px;
+  height: 720px;
+}
+
+/* 메인 이미지들 (흐릿하게 배경 처리) */
+.hospin-logo {
+  width: 400px;
+  align-self: flex-end;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.image-tetris {
+  position: absolute;
+  right: 40px;
+  bottom: 100px;
+  width: 540px;
+  height: 340px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+}
+
+.image-tetris img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dimmed img {
+  opacity: 0.3;
+}
+
+/* 소개 텍스트 */
+.hospital-info-overlay {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 80%;
+  text-align: right;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.hospital-info-overlay h1 {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.hospital-info-overlay h1.highlight {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.hospital-info-overlay hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #2c2c4e;
+}
+
+.hospital-info-overlay p {
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 14px;
+  color: #333;
+}

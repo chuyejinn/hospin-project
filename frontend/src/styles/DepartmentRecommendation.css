@@ -1,0 +1,116 @@
+.dept-wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f0f2f5;
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메인 */
+.dept-main {
+  flex: 1;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-top: 30px;
+}
+
+.dept-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.dept-symptoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.dept-symptom-option {
+  background: #f8f9fc;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccd5e0;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.dept-btn-primary {
+  min-width: 120px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  background: #3a6aa0;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ✅ 결과 카드 */
+.dept-result-card {
+  margin-top: 24px;
+  background: #f9fbff;
+  border: 2px solid #d0d9ec;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+  text-align: center;
+}
+.dept-result-card h3 {
+  font-size: 20px;
+  margin-bottom: 12px;
+  color: #2f4f80;
+}
+.dept-result-card p {
+  font-size: 16px;
+  margin: 6px 0;
+}
+.dept-highlight {
+  color: #2f5f91;
+  font-weight: 700;
+}
+.dept-btn-secondary {
+  margin-top: 16px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #4a7fc4;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* 하단 바 */
+.staff-footer {
+  width: 100%;
+  max-width: 1200px;
+  height: 120px;
+  background-color: #939eac;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 40px auto 0;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0 40px;
+  box-sizing: border-box;
+}
+.staff-footer img {
+  height: 55px;
+}
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: right;
+}
+.staff-footer p {
+  margin: 0;
+  font-size: 15px;
+}
