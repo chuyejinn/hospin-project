@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class MedicalRecordController {
 
     /** 진료 기록 등록 */
     @PostMapping
+    @PreAuthorize("hasAuthority('DOCTOR')")
     public ResponseEntity<?> createMedicalRecord(
             @RequestBody MedicalRecordRequestDto dto,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {

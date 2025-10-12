@@ -3,6 +3,7 @@ package com.example.hospin.security;
 import com.example.hospin.domain.entity.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -20,7 +21,9 @@ public class UserDetailsImpl implements UserDetails {
     // ✅ 사용자 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // 권한 없음
+        return Collections.singletonList(
+                new SimpleGrantedAuthority(user.getRole().name())
+        );
     }
 
     // ✅ 사용자 비밀번호

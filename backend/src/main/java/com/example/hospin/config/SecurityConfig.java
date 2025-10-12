@@ -1,14 +1,24 @@
 package com.example.hospin.config;
 
+import com.example.hospin.security.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -16,22 +26,28 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // ✅ 인증 없이 접근 가능한 경로 (맨 위에!)
                         .requestMatchers(
-                                "/",                      // 홈
-                                "/auth/**",               // 인증 관련
-                                "/swagger-ui.html",       // Swagger 메인
-                                "/swagger-ui/**",         // Swagger UI 리소스
-                                "/v3/api-docs/**",        // OpenAPI JSON
-                                "/v3/api-docs",
-                                "/swagger-resources/**",  // Swagger 리소스
-                                "/webjars/**"             // Swagger JS
+                                "/", "/auth/**",
+                                "/swagger-ui.html", "/swagger-ui/**",
+                                "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**"
                         ).permitAll()
-                        .anyRequest().permitAll() // 일단 전체 허용
+                        .requestMatchers(HttpMethod.POST, "/medical-records").hasAuthority("DOCTOR")
+
+                        // ✅ 나머지는 인증만 필요
+                        .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf.disable());
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
