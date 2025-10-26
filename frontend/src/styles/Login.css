@@ -6,11 +6,7 @@
 }
 
 .login-container {
-  background: linear-gradient(
-    90deg,
-    rgba(135, 180, 232, 0.88) 0%,
-    rgba(54, 103, 147, 0.88) 100%
-  );
+  background: linear-gradient(90deg, rgba(135,180,232,0.88) 0%, rgba(54,103,147,0.88) 100%);
   height: 800px;
   position: relative;
   width: 1200px;
@@ -40,16 +36,9 @@
   margin-bottom: 5px;
 }
 
-/* 이메일과 비밀번호 사이 간격 넓히기 */
-.password-row {
-  margin-top: 50px; /* 🔥 50px 간격 */
-}
+.password-row { margin-top: 50px; }
 
-.label {
-  color: #000000;
-  font-size: 25px;
-  min-width: 90px;
-}
+.label { color: #000; font-size: 25px; min-width: 90px; }
 
 .input-text {
   flex: 1;
@@ -57,13 +46,6 @@
   padding: 0 5px;
   background-color: transparent;
   color: #000;
-}
-
-.input-line {
-  width: 600px;
-  height: 1px;
-  background-color: #000;
-  margin-bottom: 30px;
 }
 
 .button-group {
@@ -74,9 +56,9 @@
 }
 
 .btn-next, .btn-prev {
-  display: flex;               /* 🔥 flex로 내부 정렬 */
-  align-items: center;         /* 세로 중앙 */
-  justify-content: center;     /* 가로 중앙 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #436892;
   border-radius: 10px;
   border: none;
@@ -85,7 +67,7 @@
   cursor: pointer;
   width: 80px;
   height: 50px;
-  padding: 0;                  /* 불필요한 padding 제거 */
+  padding: 0;
 }
 
 .btn-prev {
@@ -94,6 +76,7 @@
   color: #436892;
 }
 
+.btn-next[disabled] { opacity: 0.7; cursor: not-allowed; }
 
 .title {
   color: #fffbfb;
@@ -105,14 +88,6 @@
   white-space: nowrap;
 }
 
-.return-icon {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  font-size: 32px;
-  cursor: pointer;
-}
-
 .signup-text {
   position: absolute;
   top: 158px;
@@ -120,4 +95,11 @@
   color: #000000cc;
   font-size: 25px;
   cursor: pointer;
+}
+
+.error-text {
+  margin-top: 20px;
+  color: #c62828;
+  font-size: 16px;
+  text-align: center;
 }

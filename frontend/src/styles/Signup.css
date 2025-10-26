@@ -1,113 +1,37 @@
-.signup-screen { 
-  background-color: transparent;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
+.signup-screen { background-color: transparent; display: flex; justify-content: center; width: 100%; }
 
 .signup-container {
-  background: linear-gradient(
-    90deg,
-    rgba(135, 180, 232, 0.88) 0%,
-    rgba(54, 103, 147, 0.88) 100%
-  );
-  min-height: 100vh;   /* 세로는 화면 크기 이상부터 시작 */
-  height: 1200px; 
-  position: relative;
-  width: 1200px;
-  overflow: visible; 
+  background: linear-gradient(90deg, rgba(135,180,232,0.88) 0%, rgba(54,103,147,0.88) 100%);
+  min-height: 100vh; height: 1200px; position: relative; width: 1200px; overflow: visible;
 }
 
 .signup-form {
-  background-color: #fffcfc;
-  border-radius: 20px;
-  height: auto;
-  left: 147px;
-  position: absolute;
-  top: 180px;
-  width: 906px;
-  padding: 50px 70px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+  background-color: #fffcfc; border-radius: 20px; height: auto; left: 147px; position: absolute;
+  top: 180px; width: 906px; padding: 50px 70px; box-sizing: border-box; display: flex; flex-direction: column;
 }
 
-.main-title {
-  color: #fffbfb;
-  font-size: 38px;
-  position: absolute;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-}
+.main-title { color: #fffbfb; font-size: 38px; position: absolute; top: 80px; left: 50%; transform: translateX(-50%); white-space: nowrap; }
 
-.form-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
+.form-title { font-size: 28px; font-weight: bold; margin-bottom: 15px; }
+.divider { border: none; height: 1px; background-color: #ccc; margin-bottom: 30px; }
 
-.divider {
-  border: none;
-  height: 1px;
-  background-color: #ccc;
-  margin-bottom: 30px;
+.role-section { margin-bottom: 30px; display: flex; flex-direction: column; }
+.role-buttons { display: flex; gap: 15px; margin-top: 10px; }
+.role-btn {
+  flex: 1; border: 1px solid #436892; border-radius: 8px; background-color: white; color: #436892;
+  font-size: 18px; padding: 10px 0; cursor: pointer; transition: all 0.2s ease;
 }
+.role-btn:hover { background-color: #e3eaf2; }
+.role-btn.active { background-color: #436892; color: white; font-weight: bold; }
 
-.input-section {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 25px;
-}
+.input-section { display: flex; flex-direction: column; margin-bottom: 25px; }
+.label { font-size: 20px; margin-bottom: 8px; font-weight: bold; }
+.input-text { border: 1px solid #aaa; border-radius: 8px; font-size: 18px; padding: 10px; outline: none; }
+.hint { font-size: 14px; color: #666; margin-top: 6px; }
 
-.label {
-  font-size: 20px;
-  margin-bottom: 8px;
-  font-weight: bold;
-}
+.button-group { margin-top: 20px; display: flex; gap: 20px; justify-content: flex-end; }
+.btn-next { background-color: #436892; border-radius: 10px; border: none; color: white; font-size: 19px; padding: 10px 20px; cursor: pointer; width: 100px; height: 45px; }
+.btn-prev { background-color: white; border: 1px solid #436892; border-radius: 10px; color: #436892; font-size: 19px; padding: 10px 20px; cursor: pointer; width: 100px; height: 45px; }
 
-.input-text {
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  font-size: 18px;
-  padding: 10px;
-  outline: none;
-}
-
-.hint {
-  font-size: 14px;
-  color: #666;
-  margin-top: 6px;
-}
-
-.button-group {
-  margin-top: 20px;
-  display: flex;
-  gap: 20px;
-  justify-content: flex-end;
-}
-
-.btn-next {
-  background-color: #436892;
-  border-radius: 10px;
-  border: none;
-  color: white;
-  font-size: 19px;
-  padding: 10px 20px;
-  cursor: pointer;
-  width: 80px;
-  height: 45px;
-}
-
-.btn-prev {
-  background-color: white;
-  border: 1px solid #436892;
-  border-radius: 10px;
-  color: #436892;
-  font-size: 19px;
-  padding: 10px 20px;
-  cursor: pointer;
-  width: 80px;
-  height: 45px;
-}
+.error-text { margin-top: 10px; color: #c62828; font-size: 15px; }
+.ok-text { margin-top: 10px; color: #2e7d32; font-size: 15px; }

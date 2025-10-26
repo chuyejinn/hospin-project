@@ -10,15 +10,37 @@ import hospinLogo from "../assets/hospin_logo.png";
 const Main = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState("");
+  const [roleText, setRoleText] = useState("");
+  const [emailText, setEmailText] = useState("");
+  const [adminApproved, setAdminApproved] = useState(false);
+
+  const syncFromStorage = () => {
+    const token = localStorage.getItem("token");
+    const r = localStorage.getItem("userRole") || "";
+    const email = localStorage.getItem("userEmail") || "";
+    const approved = localStorage.getItem("adminApproved") === "true";
+
+    setIsLoggedIn(!!token);
+    setRole(r);
+    setRoleText(r === "ADMIN" ? "관리자" : r ? "일반 환자" : "");
+    setEmailText(email);
+    setAdminApproved(approved);
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    syncFromStorage();
+    const onStorage = () => syncFromStorage();
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("adminApproved");
+    syncFromStorage();
     alert("로그아웃 되었습니다.");
     navigate("/login");
   };
@@ -27,6 +49,7 @@ const Main = () => {
     <div className="main-container">
       <div className="sidebar">
         <div className="logo-text">HOSPIN</div>
+
         <nav className="menu">
           <button onClick={() => navigate("/medical-record")}>진료 기록 조회</button>
           <button onClick={() => navigate("/online-reservation")}>온라인 예약 및 확인</button>
@@ -34,12 +57,33 @@ const Main = () => {
           <hr />
           <button onClick={() => navigate("/medical-staff")}>의료진 소개</button>
           <button onClick={() => navigate("/hospital-info")}>병원 소개</button>
+
+          {/* ----- 관리자 전용 영역 ----- */}
+          {role === "ADMIN" && (
+            <>
+              <hr />
+              {adminApproved ? (
+                <button onClick={() => navigate("/admin")}>관리자 페이지</button>
+              ) : (
+                <button onClick={() => navigate("/admin-pending")}>관리자 승인 대기</button>
+              )}
+            </>
+          )}
         </nav>
+
         <div className="login-section">
           {isLoggedIn ? (
-            <button onClick={handleLogout}>로그아웃</button>
+            <div className="auth-box">
+              <button className="logout-btn" onClick={handleLogout}>로그아웃</button>
+              <div className="user-meta">
+                {roleText && <span className="user-pill">{roleText}</span>}
+                {emailText && <span className="user-email">({emailText})</span>}
+              </div>
+            </div>
           ) : (
-            <button onClick={() => navigate("/login")}>회원가입/로그인</button>
+            <button className="logout-btn" onClick={() => navigate("/login")}>
+              회원가입/로그인
+            </button>
           )}
         </div>
       </div>
