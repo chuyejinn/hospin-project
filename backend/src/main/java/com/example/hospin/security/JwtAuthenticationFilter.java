@@ -29,51 +29,54 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        //  인증 제외 경로 처리 (/auth/**는 필터 통과)
         String path = request.getRequestURI();
-        if (path.startsWith("/auth")) {
+
+        // ✅ 인증 없이 접근 가능한 경로는 필터 통과
+        if (path.startsWith("/auth")
+                || path.startsWith("/common")
+                || path.startsWith("/swagger")
+                || path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-resources")
+                || path.startsWith("/webjars")
+                || path.equals("/")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        //  Authorization 헤더에서 토큰 추출
+        // ✅ Authorization 헤더 파싱
         String header = request.getHeader("Authorization");
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
 
-            //  JWT 유효성 검증
             if (jwtUtil.validateToken(token)) {
                 String username = jwtUtil.extractEmail(token);
-                String role = jwtUtil.extractRole(token); // ✅ role 추출 ("DOCTOR" 등)
+                String role = jwtUtil.extractRole(token); // e.g. SUPER_ADMIN, ADMIN_PENDING
 
-                //  사용자 정보 로드
-                UserDetailsImpl userDetails =
-                        (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
+                // ✅ ROLE_ 접두사 추가 (Spring Security 규칙)
+                SimpleGrantedAuthority authority =
+                        new SimpleGrantedAuthority("ROLE_" + role);
 
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
-
-                // ✅ SecurityContext에 인증정보 설정
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                username,
                                 null,
                                 Collections.singletonList(authority)
                         );
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                System.out.println("✅ SecurityContext 권한: " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-
-                // ✅ 디버그 로그 (확인용)
                 System.out.println("✅ JwtAuthenticationFilter 통과됨");
                 System.out.println(" - username: " + username);
-                System.out.println(" - role: ROLE_" + role);
+                System.out.println(" - role(raw): " + role);
+                System.out.println(" - authority(registered): " + authority.getAuthority());
             }
         }
 
-        // ✅ 필터 체인 계속 진행
         filterChain.doFilter(request, response);
     }
 }

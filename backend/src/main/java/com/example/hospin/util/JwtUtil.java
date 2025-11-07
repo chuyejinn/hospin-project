@@ -1,56 +1,74 @@
 package com.example.hospin.util;
 
-import com.example.hospin.domain.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfgh";
-    private static final SecretKey SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
-    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
+    private final Key key;
+    private final long expirationMillis;
 
-    public String generateToken(User user) {
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration-ms:86400000}") long expirationMillis // 기본 1일
+    ) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationMillis = expirationMillis;
+    }
+
+    /** 토큰 생성(이메일, 역할만 넣는 버전) */
+    public String generateToken(String email, String role) {
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + expirationMillis);
+
         return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("id", user.getId())
-                .claim("role", user.getRole().name())
-                .claim("username", user.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS512)
+                .setSubject(email)
+                .addClaims(Map.of("role", role))
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    /** 이메일(subject) 추출 */
     public String extractEmail(String token) {
-        return getClaims(token).getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
 
+    /** 역할(role) 추출 */
     public String extractRole(String token) {
-        return (String) getClaims(token).get("role");
+        return extractAllClaims(token).get("role", String.class);
     }
 
+    /** 만료 여부 포함 유효성 검사 */
     public boolean validateToken(String token) {
         try {
-            Claims claims = getClaims(token);
-            return !claims.getExpiration().before(new Date());
+            Claims claims = extractAllClaims(token);
+            return claims.getExpiration() != null && claims.getExpiration().after(new Date());
         } catch (Exception e) {
             return false;
         }
     }
 
-    private Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
+    // ---------- 내부 유틸 ----------
+
+    private <T> T extractClaim(String token, Function<Claims, T> resolver) {
+        return resolver.apply(extractAllClaims(token));
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token)
                 .getBody();
     }

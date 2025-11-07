@@ -1,54 +1,37 @@
 package com.example.hospin.config;
 
-import com.example.hospin.security.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .cors(cors -> cors.disable())  // CORS 비활성화
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()  // ✅ 모든 요청 허용
+                )
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // H2 콘솔 대비
+                .formLogin(login -> login.disable())  // 로그인 폼 비활성화
+                .httpBasic(basic -> basic.disable()); // 기본 인증 비활성화
 
+        return http.build();
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        // ✅ 인증 없이 접근 가능한 경로 (맨 위에!)
-                        .requestMatchers(
-                                "/", "/auth/**",
-                                "/swagger-ui.html", "/swagger-ui/**",
-                                "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**"
-                        ).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/medical-records").hasAuthority("DOCTOR")
-
-                        // ✅ 나머지는 인증만 필요
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

@@ -1,10 +1,25 @@
--- 진료 기록 테이블
+CREATE TABLE user (
+                      id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                      email VARCHAR(255),
+                      password VARCHAR(255),
+                      role ENUM('PATIENT', 'DOCTOR'),
+                      birthdate DATE,
+                      gender ENUM('MALE', 'FEMALE'),
+                      username VARCHAR(255)
+);
+
+CREATE TABLE department (
+                            id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                            name VARCHAR(255),
+                            image_url VARCHAR(255)
+);
+
 CREATE TABLE medical_records (
-                                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                 userid BIGINT NOT NULL,
-                                 department VARCHAR(50),        -- 진료과
-                                 treatment_name VARCHAR(100),   -- 진료 내용 (ex: 레진)
-                                 doctor_name VARCHAR(50),       -- 의료진명
-                                 treatment_date DATE,           -- 진료일
-                                 treatment_fee INT              -- 진료비
+                                 id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                 user_id BIGINT,
+                                 department VARCHAR(255),
+                                 diagnosis VARCHAR(255),
+                                 visit_date DATE,
+                                 treatment_fee INT,
+                                 FOREIGN KEY (user_id) REFERENCES user(id)
 );

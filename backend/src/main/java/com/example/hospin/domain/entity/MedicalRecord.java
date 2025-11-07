@@ -9,6 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
+@Table(name = "medical_record")
 @Setter  // ✅ setter 자동 생성
 @NoArgsConstructor
 public class MedicalRecord {
