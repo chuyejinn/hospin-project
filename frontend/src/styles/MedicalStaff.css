@@ -1,0 +1,245 @@
+/* 전체 배경 */
+.staff-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 상단 바 */
+.staff-header {
+  width: 100%;
+  max-width: 1200px;
+  height: 80px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+}
+
+.staff-logo {
+  height: 50px;
+  cursor: pointer;
+}
+
+.staff-menu button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  margin-left: 20px;
+  cursor: pointer;
+  color: #000;
+}
+
+.staff-menu button:hover {
+  text-decoration: underline;
+  color: #3171ac;
+}
+
+/* 검색 알림 */
+.search-notice {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 12px;
+  background: #ffe6e6;
+  color: #8a1f1f;
+  padding: 10px 16px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* 검색 바 */
+.staff-search {
+  width: 100%;
+  max-width: 1200px;
+  margin: 16px 0;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0 40px;
+}
+
+.staff-search input {
+  width: 320px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.staff-search button {
+  padding: 10px 20px;
+  background-color: #7ea3d9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.staff-search button:hover {
+  background-color: #6590c1;
+}
+
+.staff-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 30px;
+  max-width: 1200px;
+  width: 100%;
+  padding: 20px;
+  background-color: #e6f0fa;
+  box-sizing: border-box;
+}
+
+.staff-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex; /* 사진 + 설명 옆으로 */
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.staff-img {
+  width: 120px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.staff-info {
+  flex: 1;
+}
+
+.staff-card h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+
+.staff-card h3 span {
+  font-weight: 400;
+  color: #666;
+  font-size: 16px;
+}
+
+.staff-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.staff-card ul {
+  margin: 4px 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+}
+
+.staff-card li {
+  margin-bottom: 3px;
+}
+
+/* 하단 바 */
+.staff-footer {
+  width: 100%;
+  max-width: 1200px;
+  height: 120px;
+  background-color: #939eac;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 40px;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0 40px;
+}
+
+.staff-footer img {
+  height: 50px;
+}
+
+.staff-footer p {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* ---------- Modal (검색 결과) ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal-card {
+  background: #fff;
+  width: 480px;
+  max-width: 100%;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+  text-align: center;
+}
+
+.modal-img {
+  width: 220px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 0 auto 12px;
+}
+
+.modal-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.modal-dept {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.modal-schedule {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.modal-specialty {
+  text-align: left;
+  margin: 6px auto 0;
+  max-width: 420px;
+}
+
+.modal-specialty ul {
+  margin: 6px 0 0 18px;
+  padding: 0;
+}
+
+.modal-close-button {
+  margin-top: 14px;
+  padding: 10px 18px;
+  background-color: #7ea3d9;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal-close-button:hover {
+  background-color: #6590c1;
+}

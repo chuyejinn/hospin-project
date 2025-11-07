@@ -1,0 +1,265 @@
+.ai-wrap {
+  width: 100%;
+  min-height: 100vh;
+  background: #f0f2f5;
+  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ai-body {
+  display: flex;
+  justify-content: center;
+  padding: 40px; /* 간격 넓힘 */
+}
+
+.ai-main {
+  flex: 1;
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px; /* 여백 증가 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.ai-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 28px; /* 간격 넓힘 */
+}
+
+/* ====== 증상 선택 칩 ====== */
+.ai-symptoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ai-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid #ccd5e0;
+  border-radius: 10px;
+  background: #f8f9fc;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+  transition: transform .15s, box-shadow .15s, border-color .15s;
+}
+.ai-chip input { display: none; }
+
+.ai-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+.ai-chip.on {
+  border-color: #2f5f91;
+  background: #eaf1ff;
+}
+
+/* ====== 분석 결과 카드 ====== */
+.ai-result-card {
+  margin-top: 18px;
+  border-radius: 12px;
+  border: 1px solid #cfe0f6;
+  background: linear-gradient(180deg, #f7fbff 0%, #eef5ff 100%);
+  padding: 18px 20px;
+  box-shadow: 0 4px 12px rgba(47,95,145,0.08);
+}
+.ai-result-title {
+  font-weight: 800;
+  color: #2f5f91;
+  margin-bottom: 8px;
+}
+.ai-result-body {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+/* ====== 버튼 ====== */
+.ai-btn-primary, .ai-btn-ghost {
+  min-width: 130px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ai-btn-primary {
+  border: none;
+  background: #3a6aa0;
+  color: #fff;
+}
+.ai-btn-ghost {
+  border: 2px solid #9fb8d8;
+  background: #fff;
+  color: #3a6aa0;
+}
+
+.ai-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px; /* 버튼 위 간격 */
+  gap: 12px;
+}
+.ai-actions.two {
+  justify-content: space-between;
+}
+
+/* ====== 의료진 카드 ====== */
+.ai-doc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 24px; /* 카드 간격 넓힘 */
+  margin-bottom: 28px;
+}
+.ai-doc-card {
+  position: relative;
+  display: flex;
+  gap: 16px;
+  background: #e7eef9;
+  padding: 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform .2s;
+}
+.ai-doc-card:hover {
+  transform: translateY(-4px);
+}
+.ai-doc-card.selected {
+  background: #d9e8fb;
+  border: 2px solid #2f5f91;
+}
+.ai-doc-img {
+  width: 100px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.ai-doc-name { font-weight: 700; font-size: 18px; }
+.ai-doc-schedule { font-size: 14px; color: #555; }
+
+/* ====== 의료진 카드 내부 체크 위치 ====== */
+.ai-check-wrap {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+}
+.ai-check {
+  width: 22px;
+  height: 22px;
+  accent-color: #2f5f91;
+  background: #fff;
+}
+
+/* ====== 달력 ====== */
+.ai-calendar-wrap {
+  background: #fff;
+  border: 1px solid #e0e5ef;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.ai-cal-top {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.ai-cal-ym { font-size: 20px; font-weight: 700; }
+.ai-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.ai-cal-weekcell { text-align: center; font-weight: 700; }
+.ai-cal-cell {
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9e2f1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.ai-cal-cell.empty { background: #f5f5f5; cursor: default; }
+.ai-cal-cell.disabled { background: #eee; color: #aaa; cursor: not-allowed; }
+.ai-cal-cell.selected { background: #2f5f91; color: #fff; font-weight: 700; }
+
+/* ====== 시간 버튼 ====== */
+.ai-times {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ai-time {
+  border: 1px solid #ccc;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.ai-time.on {
+  background: #3a6aa0;
+  color: #fff;
+}
+
+/* ====== 예약 완료 ====== */
+.ai-complete {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+}
+.ai-complete-box {
+  background: #fff;
+  border: 2px solid #b5c8e6;
+  border-radius: 10px;
+  padding: 40px 60px;
+  max-width: 600px;
+  text-align: center;
+}
+.ai-complete-box h2 { font-size: 26px; margin-bottom: 24px; }
+.ai-complete-box hr { margin: 14px 0 24px; }
+.ai-complete-box p { font-size: 18px; margin: 10px 0; }
+
+/* ====== 개인정보 입력 전용 ====== */
+.ai-form { padding-top: 6px; }
+.ai-form-row {
+  display:flex;
+  align-items:flex-end;
+  gap: 18px;
+  padding: 18px 0 8px;
+}
+.ai-form-label {
+  min-width: 160px;
+  font-size: 22px;
+  font-weight: 600;
+}
+.ai-form-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 400;
+  padding: 6px 4px 10px;
+  border-bottom: 1px solid #cfd6e2;
+}
+.ai-input-large::placeholder {
+  color: #c5cdd7;
+  font-weight: 400;
+}
+.ai-hr {
+  height: 1px;
+  background:#cfd6e2;
+  margin: 2px 0 8px;
+}
+.ai-error {
+  color: #e53935;
+  font-size: 14px;
+  margin: 4px 0 8px 160px;
+  font-weight: 500;
+}

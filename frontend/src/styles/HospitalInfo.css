@@ -1,0 +1,173 @@
+/* ===== 공통 레이아웃/사이드바 (Main과 동일) ===== */
+body {
+  background-color: #f0f2f5;
+  margin: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.main-container {
+  display: flex;
+  width: 1200px;
+  height: 800px;
+  background: white;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  margin: 40px auto;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.sidebar {
+  width: 280px;
+  background-color: #7ea3d9;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 30px;
+  box-sizing: border-box;
+  justify-content: space-between;
+  z-index: 3; /* 오버레이 위에 보이도록 */
+}
+
+.logo-text {
+  font-size: 50px;
+  font-weight: 800;
+  font-family: 'Pacifico', serif;
+  margin-bottom: 50px;
+  letter-spacing: 1.5px;
+}
+
+.menu { flex-grow: 5; }
+.menu button {
+  background: none;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 20px;
+  padding: 12px 0;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.menu button:hover { text-decoration: underline; }
+.menu hr {
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  margin: 18px 0;
+  width: 60%;
+  opacity: 0.6;
+}
+
+.login-section { text-align: left; }
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 0;
+  width: auto;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-align: left;
+}
+.logout-btn:hover { text-decoration: underline; }
+
+.auth-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.user-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.95);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(0,0,0,0.15);
+  line-height: 1.6;
+}
+.user-email { font-size: 12px; opacity: 0.95; }
+
+/* ===== 오른쪽 병원 소개 영역 ===== */
+.hospital-info-content {
+  position: relative;
+  flex: 1;
+  background: white;
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 920px;
+  height: 720px;
+  z-index: 1; /* 사이드바보다 아래, 오버레이보다 아래 */
+}
+
+/* 배경 로고/이미지(희미하게) */
+.hospin-logo {
+  width: 400px;
+  align-self: flex-end;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.image-tetris {
+  position: absolute;
+  right: 40px;
+  bottom: 100px;
+  width: 540px;
+  height: 340px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  z-index: 1;
+}
+.image-tetris img { width: 100%; height: 100%; object-fit: contain; }
+.dimmed img { opacity: 0.3; }
+
+/* 소개 오버레이 카드 */
+.hospital-info-overlay {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  width: 80%;
+  text-align: right;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  z-index: 2; /* 배경 이미지 위, 사이드바 아래 */
+}
+
+.hospital-info-overlay h1 {
+  font-size: 26px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+.hospital-info-overlay h1.highlight {
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+.hospital-info-overlay hr {
+  margin: 20px 0;
+  border: none;
+  border-top: 1px solid #2c2c4e;
+}
+.hospital-info-overlay p {
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 14px;
+  color: #333;
+}

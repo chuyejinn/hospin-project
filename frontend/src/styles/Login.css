@@ -1,0 +1,105 @@
+.login-screen {
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.login-container {
+  background: linear-gradient(90deg, rgba(135,180,232,0.88) 0%, rgba(54,103,147,0.88) 100%);
+  height: 800px;
+  position: relative;
+  width: 1200px;
+  overflow: visible;
+}
+
+.login-form-box {
+  background-color: #fffcfc;
+  border-radius: 20px;
+  height: 489px;
+  left: 147px;
+  position: absolute;
+  top: 225px;
+  width: 906px;
+  padding: 40px 60px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  width: 600px;
+  margin-bottom: 5px;
+}
+
+.password-row { margin-top: 50px; }
+
+.label { color: #000; font-size: 25px; min-width: 90px; }
+
+.input-text {
+  flex: 1;
+  font-size: 25px;
+  padding: 0 5px;
+  background-color: transparent;
+  color: #000;
+}
+
+.button-group {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.btn-next, .btn-prev {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #436892;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 19px;
+  cursor: pointer;
+  width: 80px;
+  height: 50px;
+  padding: 0;
+}
+
+.btn-prev {
+  background-color: white;
+  border: 1px solid #436892;
+  color: #436892;
+}
+
+.btn-next[disabled] { opacity: 0.7; cursor: not-allowed; }
+
+.title {
+  color: #fffbfb;
+  font-size: 50px;
+  position: absolute;
+  top: 99px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.signup-text {
+  position: absolute;
+  top: 158px;
+  right: 160px;
+  color: #000000cc;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.error-text {
+  margin-top: 20px;
+  color: #c62828;
+  font-size: 16px;
+  text-align: center;
+}
