@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+// src/pages/OnlineReservation.jsx
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/OnlineReservation.css";
 
@@ -9,6 +10,9 @@ import staff2 from "../assets/staff2.png";
 import staff3 from "../assets/staff3.png";
 import staff4 from "../assets/staff4.png";
 import hospinLogo from "../assets/hospin_logo.png";
+
+// ✅ 로그인 정보
+import { getCurrentUser, getUserId, isLoggedIn } from "../auth/session";
 
 /* ====================== 의료진 데이터 ====================== */
 const staffData = [
@@ -24,9 +28,16 @@ const WEEKDAYS = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 const firstDayOfMonthWeekIndex = (year, month) => new Date(year, month, 1).getDay();
 
-/* ====================== 컴포넌트 ====================== */
 const OnlineReservation = () => {
   const navigate = useNavigate();
+  const me = getCurrentUser();
+
+  // me.id 없을 때도 localStorage.userId 사용
+  const userId = useMemo(() => {
+    const id = getUserId();
+    return id ? String(id) : null;
+  }, [me?.id]);
+
   const [currentStep, setCurrentStep] = useState("home");
   const [patientName, setPatientName] = useState("");
   const [phone, setPhone] = useState("");
@@ -40,11 +51,20 @@ const OnlineReservation = () => {
 
   const [reservation, setReservation] = useState(null);
   const [allReservations, setAllReservations] = useState([]);
+  const [myReservations, setMyReservations] = useState([]);
 
+  // ✅ 예약 데이터 로드
   useEffect(() => {
     const saved = localStorage.getItem("reservations");
-    if (saved) setAllReservations(JSON.parse(saved));
-  }, []);
+    const parsed = saved ? JSON.parse(saved) : [];
+    setAllReservations(parsed);
+
+    if (userId) {
+      setMyReservations(parsed.filter(r => String(r.ownerId) === String(userId)));
+    } else {
+      setMyReservations([]);
+    }
+  }, [userId]);
 
   /* ---------------- 달력 ---------------- */
   const calendarCells = useMemo(() => {
@@ -76,16 +96,50 @@ const OnlineReservation = () => {
   const handleTimeClick = (t) => setSelectedTime(t);
   const phoneValid = /^010-\d{4}-\d{4}$/.test(phone);
 
+  // ✅ 추가: 바로 예약하기/좌측 진행 버튼 공통 가드
+  const startReservationFlow = () => {
+    if (!isLoggedIn()) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+    setCurrentStep("info");
+  };
+
   /* ---------------- 예약 완료 ---------------- */
   const handleComplete = () => {
     if (!patientName || !phoneValid || selectedDoctor === null || !selectedDate || !selectedTime) return;
+
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
     const doctor = staffData[selectedDoctor];
-    const formattedDate = `${selectedDate.year}.${String(selectedDate.month+1).padStart(2,"0")}.${String(selectedDate.day).padStart(2,"0")} ${selectedTime}`;
-    const newReservation = { name: patientName, phone, doctor: doctor.name, dept: doctor.dept, date: formattedDate, year: selectedDate.year, month: selectedDate.month, day: selectedDate.day, time: selectedTime };
+    const formattedDate =
+      `${selectedDate.year}.${String(selectedDate.month+1).padStart(2,"0")}.${String(selectedDate.day).padStart(2,"0")} ${selectedTime}`;
+
+    const newReservation = {
+      id: Date.now(),
+      ownerId: userId,      // 통일
+      name: patientName,
+      phone,
+      doctor: doctor.name,
+      dept: doctor.dept,
+      date: formattedDate,
+      year: selectedDate.year,
+      month: selectedDate.month + 1, // 1부터 저장
+      day: selectedDate.day,
+      time: selectedTime,
+    };
+
     setReservation(newReservation);
-    const updated = [...allReservations, newReservation];
-    setAllReservations(updated);
-    localStorage.setItem("reservations", JSON.stringify(updated));
+    const updatedAll = [...allReservations, newReservation];
+    setAllReservations(updatedAll);
+    setMyReservations(prev => [...prev, newReservation]);
+
+    localStorage.setItem("reservations", JSON.stringify(updatedAll));
     setCurrentStep("complete");
   };
 
@@ -109,20 +163,19 @@ const OnlineReservation = () => {
     );
   };
 
-  /* ---------------- 화면 ---------------- */
+  /* ---------------- UI 렌더 ---------------- */
   return (
     <div className="or-wrap">
       {/* 상단 바 */}
       <header className="staff-header">
-        <img 
-          src={hospinLogo} 
-          alt="HOSPIN 로고" 
-          className="staff-logo" 
-          onClick={() => navigate("/")} 
+        <img
+          src={hospinLogo}
+          alt="HOSPIN 로고"
+          className="staff-logo"
+          onClick={() => navigate("/")}
         />
         <nav className="staff-menu">
           <button onClick={() => navigate("/medical-record")}>진료 기록 조회</button>
-          {/* 항상 초기화된 홈으로 이동 */}
           <button
             onClick={() => {
               setCurrentStep("home");
@@ -142,9 +195,9 @@ const OnlineReservation = () => {
       </header>
 
       <div className="or-body">
-        {/* 좌측 메뉴: 예약 플로우 단계(info/doctor/date/complete)에서는 숨김 */}
         {["home","progress","check"].includes(currentStep) && (
           <nav className="or-left-menu">
+            {/* ✅ 진행 버튼도 동일하게 로그인 가드 */}
             <button onClick={() => setCurrentStep("progress")}>온라인 예약 진행</button>
             <button onClick={() => setCurrentStep("check")}>온라인 예약 확인</button>
           </nav>
@@ -152,27 +205,25 @@ const OnlineReservation = () => {
 
         <div className="or-content-row">
           <main className="or-main">
-            {/* 홈 */}
             {currentStep==="home" && <p>좌측 메뉴에서 원하는 기능을 선택하세요.</p>}
 
             {/* 예약 방법 선택 */}
             {currentStep==="progress" && (
-  <section className="or-method">
-    <h2 className="or-title">진료 예약 방법 선택</h2>
-    <div className="or-card-list">
-      <div className="or-card" onClick={() => setCurrentStep("info")}>
-        <img src={calendarIcon} alt="바로 예약하기"/>
-        <p>바로 예약하기</p>
-      </div>
-
-      {/* ✅ AI 카드 복원 */}
-      <div className="or-card" onClick={() => navigate("/ai-recommendation")}>
-        <img src={aiIcon} alt="AI 추천"/>
-        <p>AI 기반 추천받기</p>
-      </div>
-    </div>
-  </section>
-)}
+              <section className="or-method">
+                <h2 className="or-title">진료 예약 방법 선택</h2>
+                <div className="or-card-list">
+                  {/* ✅ 바로 예약하기도 로그인 가드 */}
+                  <div className="or-card" onClick={startReservationFlow}>
+                    <img src={calendarIcon} alt="바로 예약하기"/>
+                    <p>바로 예약하기</p>
+                  </div>
+                  <div className="or-card" onClick={() => navigate("/ai-recommendation")}>
+                    <img src={aiIcon} alt="AI 추천"/>
+                    <p>AI 기반 추천받기</p>
+                  </div>
+                </div>
+              </section>
+            )}
 
             {/* 개인정보 입력 */}
             {currentStep==="info" && (
@@ -254,7 +305,13 @@ const OnlineReservation = () => {
                 {selectedDate && (
                   <div className="or-times">
                     {timeSlots.map((t)=>{
-                      const reserved=allReservations.some(r=>r.year===selectedDate.year&&r.month===selectedDate.month&&r.day===selectedDate.day&&r.time===t&&r.doctor===staffData[selectedDoctor].name);
+                      const reserved=allReservations.some(r=>
+                        r.year===selectedDate.year &&
+                        r.month===(selectedDate.month + 1) &&
+                        r.day===selectedDate.day &&
+                        r.time===t &&
+                        r.doctor===staffData[selectedDoctor].name
+                      );
                       return (
                         <button key={t} className={`or-time ${selectedTime===t?"on":""}`} onClick={()=>!reserved&&handleTimeClick(t)} disabled={reserved}>
                           {reserved?"예약됨":t}
@@ -287,8 +344,8 @@ const OnlineReservation = () => {
             {currentStep==="check" && (
               <section className="or-section">
                 <h2 className="or-title">예약 확인</h2>
-                {allReservations.length>0 ? allReservations.map((r,idx)=>(
-                  <div key={idx} className="or-complete-box" style={{marginBottom:"20px"}}>
+                {myReservations.length>0 ? myReservations.map((r)=>(
+                  <div key={r.id} className="or-complete-box" style={{marginBottom:"20px"}}>
                     <p><strong>이름 :</strong> {r.name}</p>
                     <p><strong>의료진 · 진료과 :</strong> {r.doctor} - {r.dept}</p>
                     <p><strong>예약 날짜 :</strong> {r.date}</p>

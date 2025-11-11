@@ -1,6 +1,9 @@
+// src/pages/App.js
+import "../axios-setup";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
+/* ===== 사용자 페이지 ===== */
 import Main from "../components/Main";
 import MedicalRecord from "./MedicalRecord";
 import OnlineReservation from "./OnlineReservation";
@@ -11,44 +14,44 @@ import MedicalStaff from "./MedicalStaff";
 import Signup from "./Signup";
 import AIDepartmentRecommendation from "./AIDepartmentRecommendation";
 
-import AdminHome from "./AdminHome";         // ✅ 추가
-import AdminPending from "./AdminPending";   // ✅ 추가
-import AdminRoute from "../routes/AdminRoute"; // ✅ 추가
+/* ===== 관리자 페이지 ===== */
+import AdminHome from "./AdminHome";
+import AdminPending from "./AdminPending";
+import AdminApprovals from "./AdminApprovals";
+import AdminReservations from "./AdminReservations";           // ✅ 전체 예약(관리자)
+import ReservationPatientDetail from "./ReservationPatientDetail";
 
-// 개발 중 시뮬레이터 (운영 전 삭제!)
-import DebugAuthPanel from "./DebugAuthPanel"; // ✅ 추가
+/* ✅ 추가: 진료이용내역(관리자 편집) */
+import AdminRecordsEdit from "./AdminRecordsEdit";
 
-const App = () => {
+export default function App() {
   return (
     <Routes>
+      {/* 기본 */}
       <Route path="/" element={<Main />} />
       <Route path="/home" element={<Main />} />
+
+      {/* 사용자 */}
       <Route path="/medical-record" element={<MedicalRecord />} />
       <Route path="/online-reservation" element={<OnlineReservation />} />
       <Route path="/department-recommendation" element={<DepartmentRecommendation />} />
       <Route path="/hospital-info" element={<HospitalInfo />} />
-      <Route path="/login" element={<Login />} />
       <Route path="/medical-staff" element={<MedicalStaff />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/ai-recommendation" element={<AIDepartmentRecommendation />} />
 
-      {/* ✅ 관리자 보호 라우트: 승인 되었을 때만 /admin 접근 가능 */}
-      <Route
-        path="/admin"
-        element={
-          <AdminRoute>
-            <AdminHome />
-          </AdminRoute>
-        }
-      />
+      {/* 관리자 */}
+      <Route path="/admin" element={<AdminHome />} />
+      <Route path="/admin/pending" element={<AdminPending />} />
+      <Route path="/admin/approvals" element={<AdminApprovals />} />
+      <Route path="/admin/reservations" element={<AdminReservations />} />         {/* ✅ 추가됨 */}
+      <Route path="/admin/reservations/:reservationId" element={<ReservationPatientDetail />} />
+      <Route path="/admin/clinic" element={<AdminRecordsEdit />} />                {/* ✅ 추가됨 */}
 
-      {/* ✅ 관리자 승인 대기 페이지(ADMIN이면 접근 가능) */}
-      <Route path="/admin-pending" element={<AdminPending />} />
-
-      {/* ✅ 개발용 시뮬레이터 (운영 전 삭제) */}
-      <Route path="/debug-auth" element={<DebugAuthPanel />} />
+      {/* 선택: 404
+      <Route path="*" element={<div style={{ padding: 24 }}>Not Found</div>} />
+      */}
     </Routes>
   );
-};
-
-export default App;
+}

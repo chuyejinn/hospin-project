@@ -1,0 +1,184 @@
+/* 전체 래퍼 */
+.ar-wrapper {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* 상단 헤더 */
+.ar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.ar-title {
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2c3e50;
+}
+
+.ar-plus {
+  color: #2f6bb2;
+  font-weight: 800;
+}
+
+/* 우측 버튼 */
+.ar-right-btn {
+  border: 1.5px solid #fff;
+  background: linear-gradient(135deg, #7da8db, #4a7fc0);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  transition: transform .05s ease;
+}
+.ar-right-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.ar-right-btn:not(:disabled):active { transform: translateY(1px); }
+
+/* 본문 2열 */
+.ar-body {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+}
+
+/* ───────── 달력 패널 ───────── */
+.ar-cal {
+  background: linear-gradient(180deg, #e9f0fb, #d9e6f7);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 26px rgba(50,80,120,0.15);
+}
+
+.ar-cal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.ar-cal-head > button {
+  border: 1px solid rgba(255,255,255,0.8);
+  background: #ffffffc9;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.ar-cal-title { font-weight: 700; }
+
+/* 요일 행 */
+.ar-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.ar-cal-weekcell {
+  text-align: center;
+  font-size: 12px;
+  color: #5b6d83;
+  padding: 6px 0;
+}
+
+/* 날짜 셀 */
+.ar-cell {
+  border: none;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 64px;
+  position: relative;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+}
+
+.ar-cell.empty {
+  background: transparent;
+  box-shadow: none;
+}
+
+.ar-cell.day {
+  cursor: pointer;
+  padding: 8px;
+  text-align: left;
+}
+
+.ar-cell.day .num {
+  font-weight: 700;
+  color: #2d3f54;
+}
+
+.ar-cell.day .dot {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+/* 선택 상태 */
+.ar-cell.selected {
+  outline: 2px solid #4a7fc0;
+  box-shadow: 0 0 0 4px rgba(74,127,192,0.15);
+}
+
+/* ───────── 시간 패널 ───────── */
+.ar-slots {
+  background: #f6f9fe;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 10px 26px rgba(50,80,120,0.10);
+  min-height: 260px;
+}
+
+.ar-slots-title {
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.ar-empty {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 40px 0;
+}
+
+/* 시간 버튼 영역 */
+.ar-times {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.ar-time {
+  background: #fff;
+  border: 1px solid #dee7f3;
+  border-radius: 12px;
+  height: 44px;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+
+.ar-time.picked {
+  border-color: #4a7fc0;
+  background: #eaf2ff;
+  color: #2a5da8;
+}
+
+/* 반응형 */
+@media (max-width: 980px) {
+  .ar-body { grid-template-columns: 1fr; }
+  .ar-times { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 520px) {
+  .ar-times { grid-template-columns: repeat(3, 1fr); }
+}
