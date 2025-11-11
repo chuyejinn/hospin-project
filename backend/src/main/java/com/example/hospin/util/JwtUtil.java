@@ -1,55 +1,74 @@
 package com.example.hospin.util;
 
-import com.example.hospin.domain.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
-    private final String secretKey = "mySuperSecretKey"; // 👉 실제로는 환경변수로 분리하는 게 좋음
-    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24시간
+    private final Key key;
+    private final long expirationMillis;
 
-    // ✅ 토큰 생성: User 객체 기반
-    public String generateToken(User user) {
+    public JwtUtil(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration-ms:86400000}") long expirationMillis // 기본 1일
+    ) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationMillis = expirationMillis;
+    }
+
+    /** 토큰 생성(이메일, 역할만 넣는 버전) */
+    public String generateToken(String email, String role) {
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + expirationMillis);
+
         return Jwts.builder()
-                .setSubject(user.getEmail()) // 주제: 이메일
-                .claim("id", user.getId()) // 사용자 ID
-                .claim("role", user.getRole()) // 사용자 역할 (String)
-                .setIssuedAt(new Date()) // 발급 시간
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 만료 시간
-                .signWith(SignatureAlgorithm.HS512, secretKey) // 서명
+                .setSubject(email)
+                .addClaims(Map.of("role", role))
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // ✅ 토큰에서 이메일 추출
+    /** 이메일(subject) 추출 */
     public String extractEmail(String token) {
-        return getClaims(token).getSubject();
+        return extractClaim(token, Claims::getSubject);
     }
 
-    // ✅ 토큰에서 role 추출
+    /** 역할(role) 추출 */
     public String extractRole(String token) {
-        return (String) getClaims(token).get("role");
+        return extractAllClaims(token).get("role", String.class);
     }
 
-    // ✅ 토큰 유효성 검사
+    /** 만료 여부 포함 유효성 검사 */
     public boolean validateToken(String token) {
         try {
-            Claims claims = getClaims(token);
-            return !claims.getExpiration().before(new Date());
+            Claims claims = extractAllClaims(token);
+            return claims.getExpiration() != null && claims.getExpiration().after(new Date());
         } catch (Exception e) {
             return false;
         }
     }
 
-    // ✅ Claims 추출
-    private Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
+    // ---------- 내부 유틸 ----------
+
+    private <T> T extractClaim(String token, Function<Claims, T> resolver) {
+        return resolver.apply(extractAllClaims(token));
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
                 .parseClaimsJws(token)
                 .getBody();
     }

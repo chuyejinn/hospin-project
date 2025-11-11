@@ -2,6 +2,8 @@ package com.example.hospin.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,28 +13,25 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())  // CSRF 비활성화
+                .cors(cors -> cors.disable())  // CORS 비활성화
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()  // ✅ 모든 요청 허용
+                )
+                .headers(headers -> headers.frameOptions(frame -> frame.disable())) // H2 콘솔 대비
+                .formLogin(login -> login.disable())  // 로그인 폼 비활성화
+                .httpBasic(basic -> basic.disable()); // 기본 인증 비활성화
+
+        return http.build();
+    }
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/",                      // 홈
-                                "/auth/**",               // 인증 관련
-                                "/swagger-ui.html",       // Swagger 메인
-                                "/swagger-ui/**",         // Swagger UI 리소스
-                                "/v3/api-docs/**",        // OpenAPI JSON
-                                "/v3/api-docs",
-                                "/swagger-resources/**",  // Swagger 리소스
-                                "/webjars/**"             // Swagger JS
-                        ).permitAll()
-                        .anyRequest().permitAll() // 일단 전체 허용
-                )
-                .csrf(csrf -> csrf.disable());
-
-        return http.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }
