@@ -1,14 +1,20 @@
+// src/routes/AdminRoute.js
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { isLoggedIn, isAdminApproved, isAdminPending, isSuperAdmin } from "../utils/auth";
 
-export default function AdminRoute({ children }) {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("userRole");         // 'ADMIN' | 'PATIENT' 등
-  const approved = localStorage.getItem("adminApproved") === "true";
+// type: "approved" | "pending" | "super"
+export default function AdminRoute({ type = "approved", children }) {
+  if (!isLoggedIn()) return <Navigate to="/login" replace />;
 
-  if (!token) return <Navigate to="/login" replace />;
-  if (role !== "ADMIN") return <Navigate to="/home" replace />;
-  if (!approved) return <Navigate to="/admin-pending" replace />;
+  if (type === "super") {
+    return isSuperAdmin() ? children : <Navigate to="/home" replace />;
+  }
 
-  return children;
+  if (type === "pending") {
+    return isAdminPending() ? children : <Navigate to="/home" replace />;
+  }
+
+  // approved
+  return isAdminApproved() ? children : <Navigate to="/admin/pending" replace />;
 }

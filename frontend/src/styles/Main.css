@@ -1,3 +1,4 @@
+/* ===== 공통 레이아웃 ===== */
 body {
   background-color: #f0f2f5;
   margin: 0;
@@ -34,7 +35,7 @@ body {
   letter-spacing: 1.5px;
 }
 
-/* 메뉴 */
+/* ===== 메뉴 ===== */
 .menu { flex-grow: 5; font-size: 38px; }
 .menu button {
   background: none;
@@ -58,10 +59,10 @@ body {
   opacity: 0.6;
 }
 
-/* 로그인/로그아웃 영역 */
+/* ===== 로그인/로그아웃 영역 ===== */
 .login-section { text-align: left; }
 
-/* 버튼 모양 통일(사이드바용 작은 버튼) */
+/* 사이드바용 버튼 */
 .logout-btn {
   background: none;
   border: none;
@@ -76,38 +77,61 @@ body {
 }
 .logout-btn:hover { text-decoration: underline; }
 
-/* ▼ 버튼 아래에 세로로 정보 배치 */
+/* 버튼 아래 사용자 메타 행 */
 .auth-box {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 6px;               /* 버튼과 정보 간격 */
+  gap: 8px;                /* 버튼과 정보 간격 */
 }
 
 .user-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 2px;        /* 버튼과의 간격 미세 조정 */
+  gap: 10px;
+  flex-wrap: wrap;         /* 폭이 좁으면 자동 줄바꿈 */
+  margin-top: 2px;
 }
 
-.user-pill {
-  display: inline-block;
-  padding: 2px 8px;
-  font-size: 12px;
-  border: 1px solid rgba(255,255,255,0.95);
+/* ===== 뱃지(역할/승인) & 이메일 ===== */
+/* 캡슐 기본: 가로 레이아웃 보장 + 가운데 정렬 */
+.user-pill,
+.approval-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;                /* 균일한 높이 */
+  padding: 0 10px;             /* 가로 공간 확보 → 세로 깨짐 방지 */
+  border: 1.5px solid rgba(255,255,255,0.95);
   border-radius: 999px;
   color: #fff;
   background: rgba(0,0,0,0.15);
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;         /* 한 줄 유지 */
+  letter-spacing: 0.2px;
+}
+
+/* 역할/승인 미묘한 톤 차이(선택) */
+.user-pill { background: rgba(255,255,255,0.12); }
+.approval-pill { background: rgba(255,255,255,0.18); }
+
+/* 슈퍼관리자 강조(선택) */
+.user-pill.super {
+  background: rgba(255,255,255,0.22);
+  font-weight: 600;
 }
 
 .user-email {
-  font-size: 12px;
+  max-width: 160px;            /* 사이드바폭에 맞춰 조정 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
   opacity: 0.95;
 }
 
-/* 오른쪽 콘텐츠 영역 */
+/* ===== 오른쪽 콘텐츠 ===== */
 .content {
   position: relative;
   flex: 1;

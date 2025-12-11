@@ -1,21 +1,21 @@
+// src/pages/Signup.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Signup.css";
 
-const API_BASE = "http://3.38.239.246:8080";
+const API_BASE = "http://52.79.75.251:8080";
 
+// ── 유효성 함수들 ───────────────────────────────────────────────
 function isValidEmail(v) {
   return /^\S+@\S+\.\S+$/.test(v);
 }
-
 // 영문 + 숫자 + 특수문자 포함 8자 이상
 function isStrongPassword(v) {
   return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^\w\s]).{8,}$/.test(v);
 }
-
+// YYYY-MM-DD, 오늘 이전 날짜
 function isValidBirthdate(yyyyMmDd) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(yyyyMmDd)) return false;
-  // 미래날짜 금지(오늘 이전)
   const [Y, M, D] = yyyyMmDd.split("-").map(Number);
   const d = new Date(Date.UTC(Y, M - 1, D));
   const today = new Date();
@@ -29,9 +29,9 @@ const Signup = () => {
     email: "",
     password: "",
     username: "",
-    gender: "",      // "MALE" | "FEMALE" | "OTHER"
+    gender: "",      // "MALE" | "FEMALE"
     birthdate: "",   // "YYYY-MM-DD"
-    roleUI: "",      // "일반 환자" | "관리자" (UI 전용)
+    roleUI: "",      // 화면 표시용: "일반 환자" | "관리자"
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -43,23 +43,19 @@ const Signup = () => {
     if (!form.email.trim() || !isValidEmail(form.email.trim())) {
       return "올바른 이메일 형식을 입력해주세요.";
     }
-
     if (!form.password.trim() || !isStrongPassword(form.password.trim())) {
-      return "비밀번호는 영문 + 숫자 + 특수문자 포함 8자 이상이어야 합니다.";
+      return "비밀번호는 영문+숫자+특수문자 포함 8자 이상이어야 합니다.";
     }
-
     if (!form.username.trim()) {
       return "이름(사용자명)을 입력해주세요.";
     }
-
-    if (!["MALE", "FEMALE", "OTHER"].includes(form.gender)) {
-      return "성별은 MALE/FEMALE/OTHER 중 하나를 선택해주세요.";
+    // 서버 정책: 성별은 MALE/FEMALE만 허용
+    if (!["MALE", "FEMALE"].includes(form.gender)) {
+      return "성별은 MALE/FEMALE 중 하나를 선택해주세요.";
     }
-
     if (!isValidBirthdate(form.birthdate)) {
       return "생년월일은 과거 날짜(YYYY-MM-DD 형식)여야 합니다.";
     }
-
     return null;
   };
 
@@ -73,15 +69,15 @@ const Signup = () => {
       return;
     }
 
-    const role = form.roleUI === "관리자" ? "ADMIN" : "PATIENT";
-
+    // 서버 정책: 가입 시 role은 무조건 PATIENT로 전송
+    // (관리자 신청은 이후 승격/승인 프로세스로 처리)
     const payload = {
       email: form.email.trim(),
       password: form.password.trim(),
       username: form.username.trim(),
-      gender: form.gender,          // "MALE" | "FEMALE" | "OTHER"
+      gender: form.gender,          // "MALE" | "FEMALE"
       birthdate: form.birthdate,    // "YYYY-MM-DD"
-      role,                         // "PATIENT" | "ADMIN"
+        role: form.roleUI === "관리자" ? "ADMIN_PENDING" : "PATIENT",
     };
 
     setLoading(true);
@@ -93,15 +89,19 @@ const Signup = () => {
       });
 
       if (!res.ok) {
-        // 중복 이메일: 백엔드가 409로 주는 경우 처리
         if (res.status === 409) {
           setError("이미 가입된 이메일입니다.");
           return;
         }
-        // 400 등 기타: 서버 메시지 있으면 노출
-        const text = await res.text().catch(() => "");
-        // 서버가 기본 에러 JSON을 문자열로 보내는 경우도 있으니 한글 안내를 우선 제공
-        setError(text || "요청이 올바르지 않습니다. (gender/role/birthdate 형식을 확인해주세요)");
+        // 서버 메시지 최대한 보여주기
+        let serverMsg = "";
+        try {
+          const errJson = await res.json();
+          serverMsg = errJson?.message || errJson?.error || "";
+        } catch {
+          serverMsg = await res.text().catch(() => "");
+        }
+        setError(serverMsg || "요청이 올바르지 않습니다. (gender/role/birthdate 형식을 확인해주세요)");
         return;
       }
 
@@ -174,7 +174,7 @@ const Signup = () => {
             />
           </div>
 
-          {/* 이름(사용자명) */}
+          {/* 이름 */}
           <div className="input-section">
             <label className="label">이름</label>
             <input
@@ -186,7 +186,7 @@ const Signup = () => {
             />
           </div>
 
-          {/* 성별 */}
+          {/* 성별: MALE/FEMALE만 */}
           <div className="input-section">
             <label className="label">성별</label>
             <select
@@ -198,9 +198,8 @@ const Signup = () => {
               <option value="">선택</option>
               <option value="MALE">MALE</option>
               <option value="FEMALE">FEMALE</option>
-              <option value="OTHER">OTHER</option>
             </select>
-            <p className="hint">* 반드시 대문자(MALE/FEMALE/OTHER)</p>
+            <p className="hint">* 반드시 대문자(MALE/FEMALE)</p>
           </div>
 
           {/* 생년월일 */}
@@ -220,10 +219,20 @@ const Signup = () => {
           {okMsg && <div className="ok-text">{okMsg}</div>}
 
           <div className="button-group">
-            <button className="btn-prev" type="button" onClick={() => navigate("/login")} disabled={loading}>
+            <button
+              className="btn-prev"
+              type="button"
+              onClick={() => navigate("/login")}
+              disabled={loading}
+            >
               이전
             </button>
-            <button className="btn-next" type="button" onClick={handleSubmit} disabled={loading}>
+            <button
+              className="btn-next"
+              type="button"
+              onClick={handleSubmit}
+              disabled={loading}
+            >
               {loading ? "처리중..." : "가입"}
             </button>
           </div>

@@ -1,0 +1,76 @@
+/* 전체 중앙 배치 */
+.ad-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 800px;
+  background: transparent;
+}
+
+/* 카드 */
+.ad-card {
+  width: 640px;                     /* 기존 480 → 넓게 */
+  border-radius: 16px;
+  background: linear-gradient(135deg, #8eb3e6 0%, #548bc5 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  padding: 50px 40px 70px;          /* 내부 여백 확장 */
+  position: relative;
+  text-align: center;
+}
+
+/* 타이틀 */
+.ad-title {
+  font-size: 28px;                  /* 기존보다 큼 */
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 36px;
+  letter-spacing: 1px;
+}
+
+/* 버튼 영역 */
+.ad-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;                        /* 버튼 간격 넓힘 */
+}
+
+/* 버튼 스타일 */
+.ad-btn {
+  width: 100%;
+  padding: 18px 0;                  /* 버튼 세로 크기 확대 */
+  border-radius: 12px;
+  border: none;
+  font-size: 18px;                  /* 폰트 커짐 */
+  font-weight: 700;
+  color: #2e4666;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ad-btn:hover {
+  background: #f3f7ff;
+  transform: translateY(-3px);
+}
+
+/* ↩ 뒤로가기 버튼 */
+.ad-back {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: transparent;
+  color: #fff;
+  border-radius: 8px;
+  width: 40px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.15s ease;
+}
+
+.ad-back:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
