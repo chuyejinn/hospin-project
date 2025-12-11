@@ -22,7 +22,7 @@ public class DoctorController {
 
     @Operation(summary = "진료과별 의사 목록 조회")
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_PATIENT', 'ROLE_DOCTOR')")
+    //@PreAuthorize("hasAnyAuthority('ROLE_PATIENT', 'ROLE_DOCTOR')")
     public ResponseEntity<List<DoctorResponseDto>> getDoctorsByDepartment(
             @RequestParam Long departmentId) {
         return ResponseEntity.ok(doctorService.getDoctorsByDepartment(departmentId));
@@ -30,7 +30,7 @@ public class DoctorController {
 
     @Operation(summary = "의사 프로필 수정")
     @PutMapping("/{doctorId}")
-    @PreAuthorize("hasAuthority('ROLE_DOCTOR')")
+    //@PreAuthorize("hasAuthority('ROLE_DOCTOR')")
     public ResponseEntity<DoctorResponseDto> updateDoctorProfile(
             @PathVariable Long doctorId,
             @RequestBody DoctorResponseDto dto) {

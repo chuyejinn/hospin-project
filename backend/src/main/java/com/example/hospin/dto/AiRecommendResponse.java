@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class AiRecommendResponse {
-    private String recommendedDepartment; // 추천된 진료과명
-    private String reason; // 간단한 이유 (선택)
+    private String message;
+    private String recommendedDepartment;
 }

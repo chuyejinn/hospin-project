@@ -6,8 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReservationRequestDto {
-    private Long departmentId;      // 진료과 ID
-    private Long doctorId;          // 의사 ID
-    private String reservationDate; // 예약 날짜 (yyyy-MM-dd)
-    private String reservationTime; // 예약 시간 (HH:mm)
+    private String username;          // ✅ 사용자 이름
+    private String phone;             // ✅ 사용자 전화번호
+    private Long doctorId;
+    private String reservationDate;
+    private String reservationTime;
 }

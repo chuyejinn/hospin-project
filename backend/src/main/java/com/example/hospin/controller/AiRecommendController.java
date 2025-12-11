@@ -9,16 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/ai")
 @RequiredArgsConstructor
+@RequestMapping("/ai")
 public class AiRecommendController {
 
     private final AiRecommendService aiRecommendService;
 
+    @Operation(summary = "AI 진료과 추천", description = "입력된 증상 리스트를 기반으로 적합한 진료과를 추천합니다.")
     @PostMapping("/recommend")
-    @Operation(summary = "AI 진료과 추천", description = "사용자 증상 텍스트를 기반으로 가장 적절한 진료과를 추천합니다.")
     public ResponseEntity<AiRecommendResponse> recommend(@RequestBody AiRecommendRequest request) {
-        AiRecommendResponse response = aiRecommendService.recommendDepartment(request);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(aiRecommendService.recommendDepartment(request));
     }
 }

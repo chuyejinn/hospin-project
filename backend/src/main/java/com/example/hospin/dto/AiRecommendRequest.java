@@ -2,9 +2,10 @@ package com.example.hospin.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
 public class AiRecommendRequest {
-    private String symptom; // 사용자 입력 증상
+    private List<String> symptoms;
 }

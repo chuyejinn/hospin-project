@@ -25,6 +25,8 @@ public class User {
 
     private String username;
 
+    private String phone;      // 전화번호
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -37,11 +39,13 @@ public class User {
     private boolean adminApproved = false;
 
 
+
     // 필요 시 생성자 추가
-    public User(String email, String password, String username, Gender gender, LocalDate birthdate, UserRole role) {
+    public User(String email, String password, String username,String phone, Gender gender, LocalDate birthdate, UserRole role) {
         this.email = email;
         this.password = password;
         this.username = username;
+        this.phone = phone;
         this.gender = gender;
         this.birthdate = birthdate;
         this.role = role;

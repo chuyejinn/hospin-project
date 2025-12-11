@@ -12,27 +12,33 @@ repositories {
     mavenCentral()
 }
 
+/** ✅ 컴파일러/어노테이션 캐시 충돌 방지 */
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 dependencies {
     // ✅ Spring Boot Core
     implementation 'org.springframework.boot:spring-boot-starter-web:3.2.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.5'
     implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
-    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.2.5' // ⚡ 유효성 검사용 추가
 
-    // ✅ Logback (로깅)
-    //implementation 'ch.qos.logback:logback-core:1.4.14'
-    implementation 'ch.qos.logback:logback-classic:1.4.14'
+    // ✅ Logging (Spring Boot 내부 기본 버전 사용 - 직접 버전 지정 X)
+    implementation 'org.springframework.boot:spring-boot-starter-logging:3.2.5'
 
-    // ✅ MySQL 드라이버 (EC2 실행 포함)
-    runtimeOnly 'com.mysql:mysql-connector-j:8.0.33'
+    // ✅ MySQL
+    implementation 'com.mysql:mysql-connector-j:8.4.0'
 
     // ✅ Swagger (OpenAPI)
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
     // ✅ JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     // ✅ Lombok
     compileOnly 'org.projectlombok:lombok'

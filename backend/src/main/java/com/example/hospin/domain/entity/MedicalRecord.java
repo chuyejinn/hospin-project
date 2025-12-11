@@ -4,26 +4,25 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDate;
 
 @Entity
 @Getter
-@Table(name = "medical_record")
-@Setter  // ✅ setter 자동 생성
+@Setter
 @NoArgsConstructor
+@Table(name = "medical_record")
 public class MedicalRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 생성
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate visitDate;
-    private String department;
-    private String doctor;
-    private String diagnosis;
-    private String prescription;
-    private int treatmentFee;
+    private LocalDate visitDate;     // DTO의 date와 매핑
+    private String department;       // 예: 보존과
+    private String doctor;           // 예: 구도원
+    private String diagnosis;        // DTO의 content와 매핑
+    private String prescription;     // 처방 내용
+    private int treatmentFee;        // 일단 기본값 0
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
