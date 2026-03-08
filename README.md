@@ -84,17 +84,135 @@ MySQL 데이터베이스와 연동하여 데이터를 관리합니다.
 JWT 기반 인증 시스템을 적용했습니다.
 
 ### Architecture Overview
-Client (Web Browser)
-│
-▼
-Frontend (HTML / CSS / JavaScript)
-│
-▼
-Spring Boot REST API Server
-│
-├── Spring Security
-├── JWT Authentication
-├── Business Logic (Service Layer)
-│
-▼
+
+Client (Web Browser)  
+│  
+▼  
+Frontend (HTML / CSS / JavaScript)  
+│  
+▼  
+Spring Boot REST API Server  
+│  
+├── Spring Security  
+├── JWT Authentication  
+├── Business Logic (Service Layer)  
+│  
+▼  
 MySQL Database (AWS RDS)
+
+---
+
+## 🧩 Backend Architecture
+
+백엔드는 **Layered Architecture 구조**로 설계되었습니다.
+
+각 계층은 다음과 같은 역할을 수행합니다.
+
+| Layer | Description |
+|------|-------------|
+| Controller | HTTP 요청 처리 및 API 엔드포인트 제공 |
+| Service | 비즈니스 로직 처리 |
+| Repository | 데이터베이스 접근 (JPA) |
+| Entity | 데이터베이스 테이블과 매핑되는 객체 |
+| DTO | API 요청 및 응답 데이터 전달 객체 |
+| Security | JWT 기반 인증 및 권한 관리 |
+
+### Backend Layer Structure
+
+Controller  
+│  
+▼  
+Service  
+│  
+▼  
+Repository  
+│  
+▼  
+Database
+
+---
+
+## 🔐 Authentication Flow
+
+사용자 인증은 **JWT(JSON Web Token)** 기반으로 구현되었습니다.
+
+인증 과정은 다음과 같습니다.
+
+1. 사용자가 로그인 요청을 보냅니다.  
+2. 서버는 사용자 정보를 검증합니다.  
+3. 인증 성공 시 JWT 토큰을 발급합니다.  
+4. 클라이언트는 이후 요청 시 Authorization Header에 JWT 토큰을 포함합니다.  
+5. JwtAuthenticationFilter에서 토큰을 검증합니다.
+
+Authentication Flow
+
+Client Login Request  
+│  
+▼  
+Spring Security Authentication  
+│  
+▼  
+JWT Token Issued  
+│  
+▼  
+Client stores token  
+│  
+▼  
+API Request with JWT  
+│  
+▼  
+JwtAuthenticationFilter Validation
+
+---
+
+## 🗄 Database ERD
+
+주요 테이블 구조
+
+- User  
+- Department  
+- Doctor  
+- Reservation  
+- MedicalRecord  
+
+📌 ERD 다이어그램  
+(ERD 이미지 추가 예정)
+
+---
+
+## ☁ Deployment Architecture
+
+HOSPIN 백엔드는 AWS 클라우드 환경에서 배포되었습니다.
+
+| Component | Description |
+|-----------|-------------|
+| EC2 | Spring Boot 애플리케이션 서버 |
+| RDS | MySQL 데이터베이스 |
+| GitHub | 소스 코드 관리 |
+| Swagger | API 문서 테스트 |
+
+Deployment Structure
+
+User  
+│  
+▼  
+AWS EC2 (Spring Boot Server)  
+│  
+▼  
+AWS RDS (MySQL Database)
+
+---
+
+## 📡 API Example
+
+### Login
+
+POST /api/auth/login
+
+### Request
+
+```json
+{
+  "email": "user@test.com",
+  "password": "1234"
+}
