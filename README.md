@@ -262,8 +262,8 @@ JwtAuthenticationFilter Validation
 - MedicalRecord
 
 📌 ERD 다이어그램  
-(ERD 이미지 추가 예정)
-
+![ERD](docs/Untitled (4).png…)
+d.png)
 ---
 
 ## ☁ Deployment Architecture
