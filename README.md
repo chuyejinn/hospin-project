@@ -255,15 +255,15 @@ JwtAuthenticationFilter Validation
 
 주요 테이블 구조
 
-- User
-- Department
-- Doctor
-- Reservation
-- MedicalRecord
+- User : 사용자 정보
+- Department : 진료과 정보
+- Doctor : 의사 정보
+- Reservation : 병원 예약 정보
+- MedicalRecord : 진료 기록
+- SymptomDepartmentMapping : 증상 기반 진료과 추천을 위한 매핑 테이블
 
-📌 ERD 다이어그램  
-![ERD](docs/Untitled (4).png…)
-d.png)
+  
+![HOSPIN ERD](hospin-erd.png)
 ---
 
 ## ☁ Deployment Architecture
