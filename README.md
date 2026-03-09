@@ -216,3 +216,196 @@ POST /api/auth/login
   "email": "user@test.com",
   "password": "1234"
 }
+### Response
+
+```json
+{
+  "accessToken": "JWT_TOKEN",
+  "tokenType": "Bearer"
+}
+```
+
+---
+
+## 📑 API Endpoints Overview
+
+HOSPIN 시스템은 다음과 같은 주요 REST API를 제공합니다.
+
+### Auth API
+
+| Method | Endpoint | Description |
+|------|------|-------------|
+| POST | /api/auth/signup | 사용자 회원가입 |
+| POST | /api/auth/login | 사용자 로그인 |
+
+### Reservation API
+
+| Method | Endpoint | Description |
+|------|------|-------------|
+| POST | /api/reservations | 예약 생성 |
+| GET | /api/reservations | 예약 목록 조회 |
+| GET | /api/reservations/{id} | 예약 상세 조회 |
+
+### Medical Record API
+
+| Method | Endpoint | Description |
+|------|------|-------------|
+| GET | /api/records | 진료 기록 목록 조회 |
+| GET | /api/records/{recordId} | 진료 기록 상세 조회 |
+
+### Common API
+
+| Method | Endpoint | Description |
+|------|------|-------------|
+| GET | /common/departments | 진료과 목록 조회 |
+| GET | /common/doctors | 진료과별 의사 조회 |
+
+---
+
+## 🧪 API Testing
+
+API 테스트는 **Swagger UI**를 통해 확인할 수 있습니다.
+
+Swagger URL
+
+```
+http://<EC2-IP>:8080/swagger-ui/index.html
+```
+
+예시
+
+```
+http://3.38.239.246:8080/swagger-ui/index.html
+```
+
+Swagger를 통해 다음 기능을 테스트할 수 있습니다.
+
+- 회원가입 / 로그인
+- JWT 인증 테스트
+- 진료과 조회
+- 의사 조회
+- 예약 생성
+- 진료 기록 조회
+
+---
+
+## 📂 Project Structure
+
+```
+src
+ └── main
+     └── java
+         └── com.example.hospin
+             ├── controller
+             │     ├── AuthController
+             │     ├── ReservationController
+             │     ├── MedicalRecordController
+             │     └── CommonController
+             │
+             ├── service
+             │     ├── AuthService
+             │     ├── ReservationService
+             │     ├── MedicalRecordService
+             │     └── DepartmentService
+             │
+             ├── repository
+             │     ├── UserRepository
+             │     ├── ReservationRepository
+             │     ├── MedicalRecordRepository
+             │     └── DepartmentRepository
+             │
+             ├── entity
+             │     ├── User
+             │     ├── Department
+             │     ├── Doctor
+             │     ├── Reservation
+             │     └── MedicalRecord
+             │
+             ├── dto
+             │     ├── LoginRequestDto
+             │     ├── SignupRequestDto
+             │     └── ReservationRequestDto
+             │
+             └── security
+                   ├── JwtTokenProvider
+                   ├── JwtAuthenticationFilter
+                   └── SecurityConfig
+```
+
+---
+
+## ⚙️ Getting Started
+
+### 1️⃣ Clone Repository
+
+```
+git clone https://github.com/<your-github-id>/hospin.git
+```
+
+### 2️⃣ Build Project
+
+```
+./gradlew build
+```
+
+또는
+
+```
+gradle build
+```
+
+### 3️⃣ Run Application
+
+```
+java -jar build/libs/hospin-0.0.1-SNAPSHOT.jar
+```
+
+---
+
+## 🔑 Environment Configuration
+
+application.yml 또는 application.properties에서 다음 설정이 필요합니다.
+
+### Database
+
+```
+spring.datasource.url=jdbc:mysql://<RDS-ENDPOINT>:3306/hospin_db
+spring.datasource.username=DB_USERNAME
+spring.datasource.password=DB_PASSWORD
+```
+
+### JWT
+
+```
+jwt.secret=your-secret-key
+jwt.expiration=86400000
+```
+
+---
+
+## 🚧 Future Improvements
+
+다음과 같은 기능을 추가적으로 개선할 계획입니다.
+
+- AI 기반 진료과 추천 알고리즘 고도화
+- 예약 취소 및 변경 기능 추가
+- 의료 기록 작성 기능
+- 알림 기능 (예약 알림)
+- Docker 기반 컨테이너 배포
+- CI/CD 자동 배포 파이프라인 구축
+
+---
+
+## 👩‍💻 Author
+
+**추예진 (Chuyejin Chu)**  
+Backend Developer
+
+- GitHub : https://github.com/<your-github-id>
+- Email : your-email@example.com
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
