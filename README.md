@@ -85,20 +85,22 @@ JWT 기반 인증 시스템을 적용했습니다.
 
 ### Architecture Overview
 
-Client (Web Browser)  
-│  
-▼  
-Frontend (HTML / CSS / JavaScript)  
-│  
-▼  
-Spring Boot REST API Server  
-│  
-├── Spring Security  
-├── JWT Authentication  
-├── Business Logic (Service Layer)  
-│  
-▼  
+```
+Client (Web Browser)
+        │
+        ▼
+Frontend (HTML / CSS / JavaScript)
+        │
+        ▼
+Spring Boot REST API Server
+        │
+        ├── Spring Security
+        ├── JWT Authentication
+        ├── Business Logic (Service Layer)
+        │
+        ▼
 MySQL Database (AWS RDS)
+```
 
 ---
 
@@ -119,16 +121,108 @@ MySQL Database (AWS RDS)
 
 ### Backend Layer Structure
 
-Controller  
-│  
-▼  
-Service  
-│  
-▼  
-Repository  
-│  
-▼  
+```
+Controller
+   │
+   ▼
+Service
+   │
+   ▼
+Repository
+   │
+   ▼
 Database
+```
+
+---
+
+## 📂 Project Structure
+
+HOSPIN 백엔드는 **Layered Architecture 구조**를 기반으로 설계되었습니다.
+
+```
+backend
+ └── src
+     └── main
+         └── java
+             └── com.example.hospin
+
+                 ├── config
+                 │     ├── BootstrapSuperAdmin
+                 │     ├── SecurityConfig
+                 │     ├── SwaggerConfig
+                 │     └── WebConfig
+                 │
+                 ├── controller
+                 │     ├── AdminController
+                 │     ├── AdminUserController
+                 │     ├── AiRecommendController
+                 │     ├── AuthController
+                 │     ├── DepartmentController
+                 │     ├── DoctorController
+                 │     ├── MedicalRecordController
+                 │     └── ReservationController
+                 │
+                 ├── domain.entity
+                 │     ├── Department
+                 │     ├── Doctor
+                 │     ├── Gender
+                 │     ├── MedicalRecord
+                 │     ├── Reservation
+                 │     ├── SymptomDepartmentMapping
+                 │     ├── User
+                 │     └── UserRole
+                 │
+                 ├── dto
+                 │     ├── AiRecommendRequest
+                 │     ├── AiRecommendResponse
+                 │     ├── DepartmentResponseDto
+                 │     ├── DoctorResponseDto
+                 │     ├── LoginRequest
+                 │     ├── LoginResponse
+                 │     ├── MedicalRecordDetailDto
+                 │     ├── MedicalRecordRequestDto
+                 │     ├── MedicalRecordResponseDto
+                 │     ├── MedicalRecordSummaryDto
+                 │     ├── ReservationRequestDto
+                 │     ├── ReservationResponseDto
+                 │     ├── SignupRequest
+                 │     └── UserResponseDto
+                 │
+                 ├── repository
+                 │     ├── DepartmentRepository
+                 │     ├── DoctorRepository
+                 │     ├── MedicalRecordRepository
+                 │     ├── ReservationRepository
+                 │     ├── SymptomDepartmentMappingRepository
+                 │     └── UserRepository
+                 │
+                 ├── security
+                 │     ├── JwtAuthenticationFilter
+                 │     ├── UserDetailsImpl
+                 │     └── UserDetailsServiceImpl
+                 │
+                 ├── service
+                 │     ├── AdminService
+                 │     ├── AdminUserService
+                 │     ├── AiRecommendService
+                 │     ├── AuthService
+                 │     ├── DepartmentService
+                 │     ├── DoctorService
+                 │     ├── MedicalRecordService
+                 │     ├── ReservationService
+                 │     └── UserService
+                 │
+                 ├── util
+                 │     └── JwtUtil
+                 │
+                 └── HospinApplication
+                 
+ └── resources
+       ├── application.properties
+       ├── data.sql
+       └── schema.sql
+```
 
 ---
 
@@ -136,32 +230,24 @@ Database
 
 사용자 인증은 **JWT(JSON Web Token)** 기반으로 구현되었습니다.
 
-인증 과정은 다음과 같습니다.
-
-1. 사용자가 로그인 요청을 보냅니다.  
-2. 서버는 사용자 정보를 검증합니다.  
-3. 인증 성공 시 JWT 토큰을 발급합니다.  
-4. 클라이언트는 이후 요청 시 Authorization Header에 JWT 토큰을 포함합니다.  
-5. JwtAuthenticationFilter에서 토큰을 검증합니다.
-
-Authentication Flow
-
-Client Login Request  
-│  
-▼  
-Spring Security Authentication  
-│  
-▼  
-JWT Token Issued  
-│  
-▼  
-Client stores token  
-│  
-▼  
-API Request with JWT  
-│  
-▼  
+```
+Client Login Request
+        │
+        ▼
+Spring Security Authentication
+        │
+        ▼
+JWT Token Issued
+        │
+        ▼
+Client stores token
+        │
+        ▼
+API Request with JWT
+        │
+        ▼
 JwtAuthenticationFilter Validation
+```
 
 ---
 
@@ -169,11 +255,11 @@ JwtAuthenticationFilter Validation
 
 주요 테이블 구조
 
-- User  
-- Department  
-- Doctor  
-- Reservation  
-- MedicalRecord  
+- User
+- Department
+- Doctor
+- Reservation
+- MedicalRecord
 
 📌 ERD 다이어그램  
 (ERD 이미지 추가 예정)
@@ -182,24 +268,15 @@ JwtAuthenticationFilter Validation
 
 ## ☁ Deployment Architecture
 
-HOSPIN 백엔드는 AWS 클라우드 환경에서 배포되었습니다.
-
-| Component | Description |
-|-----------|-------------|
-| EC2 | Spring Boot 애플리케이션 서버 |
-| RDS | MySQL 데이터베이스 |
-| GitHub | 소스 코드 관리 |
-| Swagger | API 문서 테스트 |
-
-Deployment Structure
-
-User  
-│  
-▼  
-AWS EC2 (Spring Boot Server)  
-│  
-▼  
+```
+User
+  │
+  ▼
+AWS EC2 (Spring Boot Server)
+  │
+  ▼
 AWS RDS (MySQL Database)
+```
 
 ---
 
@@ -216,6 +293,8 @@ POST /api/auth/login
   "email": "user@test.com",
   "password": "1234"
 }
+```
+
 ### Response
 
 ```json
@@ -230,9 +309,7 @@ POST /api/auth/login
 ## 📑 API Endpoints
 
 HOSPIN 백엔드는 총 **19개의 REST API**로 구성되어 있으며  
-환자 · 의사 · 관리자 기능을 포함한 **예약 / 진료 기록 / AI 추천 / 권한 관리 시스템**을 제공합니다.
-
-Swagger를 통해 전체 API 테스트가 가능합니다.
+예약 / 진료 기록 / AI 추천 / 관리자 관리 기능을 제공합니다.
 
 ---
 
@@ -246,52 +323,40 @@ Swagger를 통해 전체 API 테스트가 가능합니다.
 | POST | /auth/login | 로그인 |
 | POST | /auth/logout | 로그아웃 |
 
----
-
 ### 🩺 AI Recommendation API
 
 | Method | Endpoint | Description |
 |------|------|-------------|
-| POST | /ai/recommend | 사용자 증상 기반 진료과 추천 |
-
----
+| POST | /ai/recommend | 진료과 추천 |
 
 ### 👨‍⚕️ Doctor API
 
 | Method | Endpoint | Description |
 |------|------|-------------|
-| GET | /doctors | 의사 목록 조회 |
-| PUT | /doctors/{doctorId} | 의사 정보 수정 |
-
----
+| GET | /doctors | 의사 조회 |
+| PUT | /doctors/{doctorId} | 의사 수정 |
 
 ### 📅 Reservation API
 
 | Method | Endpoint | Description |
 |------|------|-------------|
 | POST | /reservations | 예약 생성 |
-| GET | /reservations/my | 사용자 예약 조회 |
+| GET | /reservations/my | 예약 조회 |
 | DELETE | /reservations/{reservationId} | 예약 취소 |
-
----
 
 ### 📋 Medical Record API
 
 | Method | Endpoint | Description |
 |------|------|-------------|
 | POST | /medical-records | 진료 기록 등록 |
-| GET | /medical-records/{userId} | 환자 진료 기록 조회 |
-
----
+| GET | /medical-records/{userId} | 진료 기록 조회 |
 
 ### 🏥 Department API
 
 | Method | Endpoint | Description |
 |------|------|-------------|
-| GET | /common/departments | 진료과 목록 조회 |
-| GET | /common/departments/{id} | 진료과 상세 조회 |
-
----
+| GET | /common/departments | 진료과 목록 |
+| GET | /common/departments/{id} | 진료과 상세 |
 
 ### 👑 Admin API
 
@@ -299,10 +364,14 @@ Swagger를 통해 전체 API 테스트가 가능합니다.
 |------|------|-------------|
 | PUT | /admin/approve/{userId} | 관리자 승인 |
 | PUT | /admin/reject/{userId} | 관리자 거절 |
-| GET | /admin/pending | 승인 대기 관리자 목록 조회 |
+| GET | /admin/pending | 승인 대기 조회 |
 
 ---
 
 ## 🧪 API Documentation (Swagger)
 
-Swagger UI를 통해 API를 테스트할 수 있습니다.
+Swagger UI를 통해 전체 API 테스트가 가능합니다.
+
+```
+http://<EC2-IP>:8080/swagger-ui/index.html
+```
