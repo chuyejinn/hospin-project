@@ -370,8 +370,11 @@ HOSPIN 백엔드는 총 **19개의 REST API**로 구성되어 있으며
 
 ## 🧪 API Documentation (Swagger)
 
-Swagger UI를 통해 전체 API 테스트가 가능합니다.
+Swagger UI를 통해 API 테스트가 가능합니다.
+
+현재 서버는 비용 절감을 위해 중지된 상태이며  
+필요 시 EC2 인스턴스를 재배포하여 확인할 수 있습니다.
 
 ```
-http://<EC2-IP>:8080/swagger-ui/index.html
+http://52.79.75.251:8080/swagger-ui/index.html
 ```
